@@ -6,59 +6,13 @@ import {
   SafeAreaView,
   Dimensions,
   StyleSheet,
-  Platform,
   Modal,
   Animated,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
-import * as Animatable from 'react-native-animatable';
-import {connect, useDispatch, useSelector} from 'react-redux';
-import {
-  addItemToCart,
-  removeFromCart,
-  emptyCart,
-} from '../../Redux/Action/actions';
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import PushNotification from 'react-native-push-notification';
 
 const CominSoonModal = ({navigation, showModal, hideModal}) => {
-  const dispatch = useDispatch();
-  const {cartItems} = useSelector(reducers => reducers.cartReducer);
   const scaleValue = useRef(new Animated.Value(0)).current;
-
-  PushNotification.createChannel(
-    {
-      channelId: 'test-channel',
-      channelName: 'My channel', // (required)
-      channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
-      playSound: true, // (optional) default: true
-      soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
-      vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
-    },
-    created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
-  );
-
-  const showScheduleNotification = () => {
-    if (Platform.OS === 'ios') {
-      const date = new Date();
-      date.setSeconds(date.getSeconds() + 6);
-      PushNotificationIOS.scheduleLocalNotification({
-        alertTitle: 'Mr.Fix',
-        alertBody: 'Thank You for Placing Order 😃',
-        fireDate: date.toISOString(),
-        soundName: 'default',
-      });
-    } else {
-      PushNotification.localNotificationSchedule({
-        //... You can use all the options from localNotifications
-        channelId: 'test-channel',
-        title: 'Mr.Fix',
-        message: 'Thank You for Placing Order 😃', // (required)
-        date: new Date(Date.now() + 10 * 1000), // in 60 secs
-        allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
-      });
-    }
-  };
 
   const animateModal = () => {
     Animated.spring(scaleValue, {

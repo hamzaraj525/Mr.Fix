@@ -61,7 +61,7 @@ export default StyleSheet.create({
   contiBtn: {
     marginTop: '3%',
     alignSelf: 'center',
-    width: '90%',
+    width: '80%',
     height: 43,
     justifyContent: 'space-evenly',
     alignItems: 'center',

@@ -67,10 +67,9 @@ function OrderDetail({navigation, route}) {
                       resizeMode={FastImage.resizeMode.cover}
                       priority={FastImage.priority.high}
                       style={{
-                        borderRadius: 40 / 2,
-                        width: 40,
-
-                        height: 40,
+                        borderRadius: 38 / 2,
+                        width: 38,
+                        height: 38,
                       }}
                       source={{uri: element.img}}
                     />
@@ -79,16 +78,20 @@ function OrderDetail({navigation, route}) {
                       resizeMode="cover"
                       priority={FastImage.priority.normal}
                       style={{
-                        borderRadius: 40 / 2,
-                        width: 40,
-
-                        height: 40,
+                        borderRadius: 38 / 2,
+                        width: 38,
+                        height: 38,
                       }}
                       source={require('../../../assets/Images/man.png')}
                     />
                   )}
 
-                  <Text style={style.subTitxt}>{element.title}</Text>
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode={element.title.length > 10 ? 'tail' : null}
+                    style={[style.subTitxt, {flex: 1, marginLeft: 7}]}>
+                    {element.title}
+                  </Text>
                 </View>
                 <Text style={style.subTitxt}>PKR {element.Price}</Text>
               </View>
@@ -148,7 +151,9 @@ function OrderDetail({navigation, route}) {
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: '35%'}}
+        contentContainerStyle={{
+          paddingBottom: '35%',
+        }}
         style={{marginTop: '2%'}}>
         {details()}
       </ScrollView>

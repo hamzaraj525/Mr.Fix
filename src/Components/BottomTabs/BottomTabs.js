@@ -1,22 +1,14 @@
 import React, {Component, PureComponent} from 'react';
 import {
   View,
-  Text,
-  Dimensions,
   Pressable,
   SafeAreaView,
   Platform,
   StyleSheet,
-  Modal,
-  Image,
 } from 'react-native';
-
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import LottieView from 'lottie-react-native';
-
-function BottomTabs({navigation}) {
+function BottomTabs({navigation, props}) {
   const [colorId, setColorId] = React.useState(0);
 
   const changeColor = id => {
