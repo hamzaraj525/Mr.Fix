@@ -52,10 +52,7 @@ export default StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
   },
-  subTitxt: {
-    fontFamily: 'RobotoSlab-Bold',
-    color: 'black',
-  },
+  subTitxt: {fontSize: 15, fontFamily: 'RobotoSlab-Bold', color: 'black'},
   contiBtn: {
     marginTop: 9,
     alignSelf: 'center',

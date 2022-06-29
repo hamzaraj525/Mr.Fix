@@ -15,34 +15,20 @@ import NetInfo from '@react-native-community/netinfo';
 import LottieView from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
 import {connect, useDispatch, useSelector} from 'react-redux';
-import {
-  addItemToCart,
-  removeFromCart,
-  emptyCart,
-} from '../../Redux/Action/actions';
-import {useEffect} from 'react';
 
-const NetworkModal = ({navigation, networkModal, hideModalNetwork}) => {
+const NetworkModal = props => {
   const dispatch = useDispatch();
   const {cartItems, userId} = useSelector(reducers => reducers.cartReducer);
   const scaleValue = useRef(new Animated.Value(0)).current;
-
-  const animateModal = () => {
-    Animated.spring(scaleValue, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  };
 
   return (
     <Modal
       animationType="slide"
       transparent={true}
       onRequestClose={() => {
-        hideModalNetwork();
+        props.hideModalNetwork();
       }}
-      visible={networkModal}>
+      visible={props.networkModal}>
       <SafeAreaView
         style={{
           alignItems: 'center',
@@ -50,7 +36,13 @@ const NetworkModal = ({navigation, networkModal, hideModalNetwork}) => {
           justifyContent: 'center',
           backgroundColor: '#000000aa',
         }}>
-        <Animated.View style={[styles.containerr, {}]}>
+        <Animated.View
+          style={[
+            styles.containerr,
+            {
+              transform: [{translateX: scaleValue}],
+            },
+          ]}>
           <Text
             style={{
               fontSize: 47,
@@ -62,34 +54,43 @@ const NetworkModal = ({navigation, networkModal, hideModalNetwork}) => {
             style={{
               color: 'black',
               fontFamily: 'RobotoSlab-Bold',
-              fontWeight: '600',
-              fontSize: 17,
+              fontWeight: '700',
+              fontSize: 20,
             }}>
             Network Error
           </Text>
-          <Text
-            style={{
-              color: 'black',
-              fontFamily: 'RobotoSlab-Bold',
-              fontWeight: '200',
-              fontSize: 14,
-            }}>
-            Your requested action could not be completed due to connectivity
-            issues
-          </Text>
+          <View style={{alignItems: 'center'}}>
+            <Text
+              style={{
+                color: 'black',
+                fontFamily: 'RobotoSlab-Bold',
+                fontWeight: '200',
+                fontSize: 14,
+              }}>
+              Your requested action could not be completed
+            </Text>
+            <Text
+              style={{
+                color: 'black',
+                fontFamily: 'RobotoSlab-Bold',
+                fontWeight: '200',
+                fontSize: 14,
+              }}>
+              due to connectivity issues
+            </Text>
+          </View>
           <Pressable
             style={[
               styles.loginBtn,
               {
                 width: '60%',
-                marginTop: '5%',
-                height: '18%',
+                height: 55,
                 backgroundColor: 'red',
               },
             ]}
             onPress={() => {
-              hideModalNetwork();
-              animateModal();
+              props.hideModalNetwork();
+              props.checkConnection();
             }}>
             <Text
               style={{
@@ -98,9 +99,9 @@ const NetworkModal = ({navigation, networkModal, hideModalNetwork}) => {
                 fontWeight: '800',
                 color: 'white',
               }}>
-              Close
+              Try Again
             </Text>
-            <Entypo name={'cross'} size={26} color={'white'} />
+            <Entypo name={'cross'} size={29} color={'white'} />
           </Pressable>
         </Animated.View>
       </SafeAreaView>
@@ -114,14 +115,17 @@ const styles = StyleSheet.create({
   },
 
   containerr: {
-    width: '75%',
+    width: '100%',
     backgroundColor: 'white',
-    borderTopLeftRadius: 23,
-    borderTopRightRadius: 23,
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35,
     alignItems: 'center',
     justifyContent: 'space-evenly',
     flexDirection: 'column',
-    alignSelf: 'center',
+    position: 'absolute',
+    bottom: 0,
+    height: 330,
+    paddingVertical: '6%',
   },
 
   loginBtn: {
@@ -133,13 +137,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: '7%',
     alignItems: 'center',
     flexDirection: 'row',
-    shadowColor: 'grey',
+    shadowColor: 'black',
     shadowOffset: {
       width: 0,
       height: 7,
     },
     elevation: 16,
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 3,
   },
 });

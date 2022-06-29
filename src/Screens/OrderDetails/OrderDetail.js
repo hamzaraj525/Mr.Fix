@@ -67,9 +67,9 @@ function OrderDetail({navigation, route}) {
                       resizeMode={FastImage.resizeMode.cover}
                       priority={FastImage.priority.high}
                       style={{
-                        borderRadius: 38 / 2,
-                        width: 38,
-                        height: 38,
+                        borderRadius: 34 / 2,
+                        width: 34,
+                        height: 34,
                       }}
                       source={{uri: element.img}}
                     />
@@ -78,9 +78,9 @@ function OrderDetail({navigation, route}) {
                       resizeMode="cover"
                       priority={FastImage.priority.normal}
                       style={{
-                        borderRadius: 38 / 2,
-                        width: 38,
-                        height: 38,
+                        borderRadius: 34 / 2,
+                        width: 34,
+                        height: 34,
                       }}
                       source={require('../../../assets/Images/man.png')}
                     />

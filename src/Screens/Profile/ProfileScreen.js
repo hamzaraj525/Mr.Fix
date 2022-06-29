@@ -79,7 +79,6 @@ function ProfileScreen({navigation, props, route}) {
                 width: 41,
                 height: 41,
                 borderRadius: 12,
-
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>

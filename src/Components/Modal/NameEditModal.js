@@ -23,13 +23,7 @@ import {
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
 import database from '@react-native-firebase/database';
-const NameEditModal = ({
-  navigation,
-  showNameModal,
-  hideNameModal,
-  nameEdit,
-  idEdit,
-}) => {
+const NameEditModal = props => {
   const [name, setName] = useState('');
   const [list, setList] = useState([]);
   const dispatch = useDispatch();
@@ -48,12 +42,12 @@ const NameEditModal = ({
 
   const updateName = () => {
     if (userName.length > 0) {
-      hideNameModal();
+      props.hideNameModal();
       dispatch(updateUserName(userName));
       animateModal();
 
       database()
-        .ref('users/' + nameEdit)
+        .ref('users/' + props.nameEdit)
         .update({
           userName: userName,
         })
@@ -62,16 +56,16 @@ const NameEditModal = ({
       alert('Please Enter Name');
     }
   };
-  console.log(nameEdit);
-  console.log(idEdit);
+  console.log(props.nameEdit);
+  console.log(props.idEdit);
   return (
     <Modal
       animationType="fade"
       transparent={true}
       onRequestClose={() => {
-        hideNameModal();
+        props.hideNameModal();
       }}
-      visible={showNameModal}>
+      visible={props.showNameModal}>
       <SafeAreaView
         style={{
           alignItems: 'center',

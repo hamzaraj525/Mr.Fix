@@ -10,8 +10,7 @@ import {
   Animated,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
-
-const CominSoonModal = ({navigation, showModal, hideModal}) => {
+const CominSoonModal = props => {
   const scaleValue = useRef(new Animated.Value(0)).current;
 
   const animateModal = () => {
@@ -27,9 +26,9 @@ const CominSoonModal = ({navigation, showModal, hideModal}) => {
       animationType="fade"
       transparent={true}
       onRequestClose={() => {
-        hideModal();
+        props.hideModal();
       }}
-      visible={showModal}>
+      visible={props.showModal}>
       <SafeAreaView
         style={{
           alignItems: 'center',
@@ -81,7 +80,7 @@ const CominSoonModal = ({navigation, showModal, hideModal}) => {
                 },
               ]}
               onPress={() => {
-                hideModal();
+                props.hideModal();
                 animateModal();
               }}>
               <Text

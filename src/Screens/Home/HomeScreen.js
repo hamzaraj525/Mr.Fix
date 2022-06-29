@@ -1,10 +1,9 @@
-import React, {useState, useLayoutEffect, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
   FlatList,
   StatusBar,
-  Dimensions,
   Platform,
   Image,
   PermissionsAndroid,
@@ -40,6 +39,7 @@ function HomeScreen({navigation, route}) {
   //   },
   // });
 
+  const GOOGLE_MAPS_APIKEY = 'AIzaSyDAhaR1U_-EQJZu4Ckm0iUQ4gxSWqIMOvY';
   const [lat, setLat] = useState();
   const [long, setLong] = useState();
   const [url, setUrl] = useState('');

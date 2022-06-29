@@ -11,9 +11,7 @@ import {
   TextInput,
   Animated,
 } from 'react-native';
-import LottieView from 'lottie-react-native';
 import database from '@react-native-firebase/database';
-import * as Animatable from 'react-native-animatable';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {
   addItemToCart,
@@ -22,15 +20,8 @@ import {
   updateUserName,
   updateUserMail,
 } from '../../Redux/Action/actions';
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import PushNotification from 'react-native-push-notification';
 
-const MailEditModal = ({
-  navigation,
-  showMailModal,
-  hideMailModal,
-  mailEdit,
-}) => {
+const MailEditModal = props => {
   const [mail, setMail] = useState('');
   const dispatch = useDispatch();
   const {cartItems, userId, userMail} = useSelector(
@@ -48,10 +39,10 @@ const MailEditModal = ({
 
   const updaterMail = () => {
     if (userMail.length > 0) {
-      hideMailModal();
+      props.hideMailModal();
       dispatch(updateUserMail(userMail));
       database()
-        .ref('cartItems/' + mailEdit)
+        .ref('users/' + props.mailEdit)
         .update({
           userMail: userMail,
         })
@@ -66,9 +57,9 @@ const MailEditModal = ({
       animationType="fade"
       transparent={true}
       onRequestClose={() => {
-        hideMailModal();
+        props.hideMailModal();
       }}
-      visible={showMailModal}>
+      visible={props.showMailModal}>
       <SafeAreaView
         style={{
           alignItems: 'center',

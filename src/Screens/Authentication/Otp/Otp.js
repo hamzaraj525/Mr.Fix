@@ -12,7 +12,7 @@ import style from './style';
 import auth from '@react-native-firebase/auth';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import database from '@react-native-firebase/database';
 const Otp = ({navigation}) => {
   const [phonePlace, setPhonePlace] = React.useState(false);

@@ -1,23 +1,29 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   StatusBar,
-  SafeAreaView,
-  Image,
-  TextInput,
-  StyleSheet,
-  Text,
   View,
+  Text,
+  Pressable,
+  Image,
   Dimensions,
+  Animated,
+  SafeAreaView,
+  StyleSheet,
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+
 import NetworkModal from './../../Components/Modal/NetworkModal';
 import NetInfo from '@react-native-community/netinfo';
-import {connect, useDispatch, useSelector} from 'react-redux';
-
+import {useDispatch, useSelector} from 'react-redux';
+import Entypo from 'react-native-vector-icons/Entypo';
 function SplashScreen({navigation}) {
+  const [showModal, setShowModal] = useState(false);
   const [color, setColor] = useState('white');
   const [networkModal, setNetworkModal] = useState(false);
   const dispatch = useDispatch();
   const {userId} = useSelector(reducers => reducers.cartReducer);
+  const scaleValue = useRef(new Animated.ValueXY({x: 0, y: 70})).current;
+
   useEffect(() => {
     checkConnection();
   }, []);
@@ -25,14 +31,21 @@ function SplashScreen({navigation}) {
   const hideModalNetwork = () => {
     setNetworkModal(false);
   };
+
+  const animateModal = () => {
+    Animated.timing(scaleValue, {
+      toValue: {x: 0, y: 0},
+      duration: 4210,
+      useNativeDriver: true,
+    }).start();
+  };
+
   const checkConnection = () => {
     NetInfo.fetch().then(state => {
       if (state.isConnected === true) {
         setTimeout(() => {
           if (userId) {
-            navigation.replace('Home', {
-              address: 'address',
-            });
+            navigation.replace('Home');
           } else {
             navigation.replace('OtpStack');
           }
@@ -40,7 +53,7 @@ function SplashScreen({navigation}) {
       } else {
         setTimeout(() => {
           setNetworkModal(true);
-        }, 2000);
+        }, 3000);
       }
       console.log('Is connected?', state.isConnected);
     });
@@ -84,9 +97,12 @@ function SplashScreen({navigation}) {
           </Text>
         </View>
       </View>
+
       <NetworkModal
         networkModal={networkModal}
         hideModalNetwork={hideModalNetwork}
+        checkConnection={checkConnection}
+        animateModal={animateModal}
       />
     </SafeAreaView>
   );

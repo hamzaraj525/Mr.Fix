@@ -7,10 +7,8 @@ import {Provider} from 'react-redux';
 import Navigation from './src/Screens/Navigations/Navigation';
 import {PersistGate} from 'redux-persist/integration/react';
 import {store, persistor} from './src/Redux/Store/store';
-LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state',
-  "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
-]);
+
+LogBox.ignoreAllLogs(true);
 
 const RootStack = createNativeStackNavigator();
 function App({}) {

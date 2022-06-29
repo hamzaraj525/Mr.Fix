@@ -36,7 +36,6 @@ function BookingScreen({navigation, route}) {
         snapshot.forEach(child => {
           // console.log(child.val());
           li.push({
-            key: child.key,
             TotalPrice: child.val().TotalPrice,
             reservation: child.val().reservation,
             message: child.val().message,
@@ -45,7 +44,7 @@ function BookingScreen({navigation, route}) {
             type: child.val().type,
             userName: child.val().userName,
             userIdd: child.val().userId,
-            idd: child.val().id,
+            key: child.val().key,
           });
         });
 
@@ -104,9 +103,10 @@ function BookingScreen({navigation, route}) {
   const previousOrders = () => {
     return list.map(item => {
       return (
-        <>
+        <View key={item.key}>
           {item.userIdd === userId ? (
             <>
+              {console.log('elemts Order----' + JSON.stringify(item.Order))}
               {item.Order.map(element => {
                 return (
                   <View key={element.key} style={style.cartItemsContainer}>
@@ -190,7 +190,7 @@ function BookingScreen({navigation, route}) {
               })}
             </>
           ) : null}
-        </>
+        </View>
       );
     });
   };

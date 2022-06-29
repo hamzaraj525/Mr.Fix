@@ -57,7 +57,7 @@ function CheckOutScreen({navigation, props, route}) {
     const idd = Math.floor(Math.random() * 1999 + 20000);
     newReference
       .set({
-        id: newReference.key,
+        key: newReference.key,
         reservation:
           timee +
           ' :' +
@@ -91,7 +91,17 @@ function CheckOutScreen({navigation, props, route}) {
   const hideOrderModal = () => {
     setShowOrderModal(false);
   };
-
+  const checkConnection = () => {
+    NetInfo.fetch().then(state => {
+      if (state.isConnected === true) {
+        addToRealTimeDatabase();
+      } else {
+        setTimeout(() => {
+          setNetworkModal(true);
+        }, 2000);
+      }
+    });
+  };
   const renderHomeServices = ({item, index}) => {
     return (
       <View onPress={() => {}} style={style.cartItemsContainer}>
@@ -425,13 +435,7 @@ function CheckOutScreen({navigation, props, route}) {
                 alert('No item in cart');
                 navigation.goBack();
               } else {
-                NetInfo.fetch().then(state => {
-                  if (state.isConnected === true) {
-                    addToRealTimeDatabase();
-                  } else {
-                    setNetworkModal(true);
-                  }
-                });
+                checkConnection();
               }
             }}>
             <Text style={style.proceedtxt}>Order</Text>
@@ -446,6 +450,7 @@ function CheckOutScreen({navigation, props, route}) {
       <NetworkModal
         networkModal={networkModal}
         hideModalNetwork={hideModalNetwork}
+        checkConnection={checkConnection}
       />
     </SafeAreaView>
   );
