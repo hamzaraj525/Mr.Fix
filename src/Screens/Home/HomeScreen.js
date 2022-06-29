@@ -39,7 +39,6 @@ function HomeScreen({navigation, route}) {
   //   },
   // });
 
-  const GOOGLE_MAPS_APIKEY = 'AIzaSyDAhaR1U_-EQJZu4Ckm0iUQ4gxSWqIMOvY';
   const [lat, setLat] = useState();
   const [long, setLong] = useState();
   const [url, setUrl] = useState('');
