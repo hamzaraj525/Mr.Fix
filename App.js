@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { LogBox, SafeAreaView, View, Image, StyleSheet } from 'react-native';
+import React, {Component} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {LogBox, SafeAreaView, View, Image, StyleSheet} from 'react-native';
 // import store from './src/Redux/Store/store';
-import { Provider } from 'react-redux';
+import {Provider} from 'react-redux';
 import Navigation from './src/Screens/Navigations/Navigation';
-import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from './src/Redux/Store/store';
+import {PersistGate} from 'redux-persist/integration/react';
+import {store, persistor} from './src/Redux/Store/store';
 
 LogBox.ignoreAllLogs(true);
 

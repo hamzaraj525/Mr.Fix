@@ -58,8 +58,6 @@ export default StyleSheet.create({
   scrolViewStyle: {
     width: '90%',
     padding: '2%',
-    borderRadius: 33,
-    borderWidth: 0.2,
     borderColor: 'black',
   },
   ediTxt: {

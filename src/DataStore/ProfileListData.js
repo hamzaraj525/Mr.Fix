@@ -7,10 +7,6 @@ const profileList = [
     name: 'About Us',
     icon: Images.INFORMATION,
   },
-  {
-    name: 'Address',
-    icon: Images.LOCATION,
-  },
 
   {
     name: 'Terms & Conditions',

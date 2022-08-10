@@ -40,8 +40,6 @@ function ProfileScreen({navigation, props, route}) {
                 navigation.navigate('Privacy');
               } else if (element.name == 'Account') {
                 navigation.navigate('ProfileEditt');
-              } else if (element.name == 'Address') {
-                navigation.navigate('Location');
               }
             }}
             style={style.btnNavigate}>
@@ -115,8 +113,7 @@ function ProfileScreen({navigation, props, route}) {
     <SafeAreaView style={style.container}>
       <ScrollView
         showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        style={style.scroll}>
+        showsVerticalScrollIndicator={false}>
         <Pressable
           style={style.backBtn}
           onPress={() => {

@@ -72,7 +72,7 @@ export default StyleSheet.create({
   backBtn: {marginTop: '2%', marginLeft: '2%'},
   scroll: {
     padding: '2%',
-    borderRadius: 33,
+    borderRadius: 12,
     borderWidth: 0.2,
     borderColor: 'black',
   },

@@ -12,7 +12,12 @@ import Constraints from './../../../src/Constraints/Constraints';
 import CominSoonModal from '../../Components/Modal/CominSoonModal';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
-import {addUserLcation, logoutUser} from '../../Redux/Action/actions';
+import {
+  addUserLcation,
+  logoutUser,
+  addLatitude,
+  addLontitude,
+} from '../../Redux/Action/actions';
 import {
   Text,
   View,
@@ -27,6 +32,7 @@ import {
 } from 'react-native';
 
 function HomeScreen({navigation, route}) {
+  const GOOGLE_MAPS_APIKEY = 'AIzaSyDAhaR1U_-EQJZu4Ckm0iUQ4gxSWqIMOvY';
   const [locationText, setLocationText] = useState('');
   const dispatch = useDispatch();
   const [long, setLong] = useState();
@@ -91,6 +97,8 @@ function HomeScreen({navigation, route}) {
         console.log('address is  here', json);
         setLocationText(addressComponent);
         dispatch(addUserLcation(addressComponent));
+        dispatch(addLatitude(lat));
+        dispatch(addLontitude(long));
       })
       .catch(error => console.log(error));
   };
