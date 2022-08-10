@@ -32,7 +32,6 @@ import {
 } from 'react-native';
 
 function HomeScreen({navigation, route}) {
-  const GOOGLE_MAPS_APIKEY = 'AIzaSyDAhaR1U_-EQJZu4Ckm0iUQ4gxSWqIMOvY';
   const [locationText, setLocationText] = useState('');
   const dispatch = useDispatch();
   const [long, setLong] = useState();
