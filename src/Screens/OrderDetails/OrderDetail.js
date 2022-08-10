@@ -1,21 +1,96 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {Text, View, Pressable, SafeAreaView, ScrollView} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import React from 'react';
+import {
+  Text,
+  View,
+  Image,
+  Pressable,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
 import style from './style';
+import FastImage from 'react-native-fast-image';
+import Imaages from './../../Constraints/Images';
+import Constraints from './../../Constraints/Constraints';
+import StepIndicator from 'react-native-step-indicator';
 
 function OrderDetail({navigation, route}) {
   const details = () => {
     const {items, item2} = route.params;
+    const [currentPosition, setCurrent] = React.useState(
+      items.Status === 'Pending'
+        ? 1
+        : items.Status === 'Confirmed'
+        ? 2
+        : items.Status === 'Work Started'
+        ? 3
+        : items.Status === 'Work End'
+        ? 4
+        : 5,
+    );
+
+    const labels = ['Pending', 'Confirmed', 'Started', 'End', 'Completed'];
+    const customStyles = {
+      stepIndicatorSize: 25,
+      currentStepIndicatorSize: 33,
+      separatorStrokeWidth: 2,
+      currentStepStrokeWidth: 3,
+      stepStrokeCurrentColor: '#fe7013',
+      stepStrokeWidth: 3,
+      stepStrokeFinishedColor: '#fe7013',
+      stepStrokeUnFinishedColor: '#aaaaaa',
+      separatorFinishedColor: '#fe7013',
+      separatorUnFinishedColor: '#aaaaaa',
+      stepIndicatorFinishedColor: '#fe7013',
+      stepIndicatorUnFinishedColor: '#ffffff',
+      stepIndicatorCurrentColor: '#ffffff',
+      stepIndicatorLabelFontSize: 13,
+      currentStepIndicatorLabelFontSize: 13,
+      stepIndicatorLabelCurrentColor: '#fe7013',
+      stepIndicatorLabelFinishedColor: '#ffffff',
+      stepIndicatorLabelUnFinishedColor: '#aaaaaa',
+      labelColor: '#999999',
+      labelSize: 13,
+      currentStepLabelColor: '#fe7013',
+    };
+
+    const progress = [
+      {id: 1, title: 'Pending', step: 1},
+      {
+        id: 2,
+        title: 'Confirmed',
+        step: 2,
+      },
+      {
+        id: 3,
+        title: 'Started',
+        step: 3,
+      },
+      {
+        id: 4,
+        title: 'End',
+        step: 4,
+      },
+      {
+        id: 5,
+        title: 'Completed',
+        step: 5,
+      },
+    ];
+    const onPageChange = () => {
+      if (items.Status === 'Pending') {
+        setCurrent(0);
+      }
+      if (items.Status === 'Confirmed') {
+        setCurrent(1);
+      }
+      if (items.Status === 'Work Started') {
+        setCurrent(2);
+      }
+    };
     return (
       <>
         <View style={style.cartItemsContainer}>
-          <View
-            style={{
-              marginBottom: 5,
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-            }}>
+          <View style={style.subContainer}>
             <Text style={[style.subTitxt, {color: 'grey'}]}>
               {items.reservation}
             </Text>
@@ -23,23 +98,13 @@ function OrderDetail({navigation, route}) {
               {items.reservation}
             </Text>
           </View>
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-            }}>
+          <View style={style.statusContainer}>
             <Text style={[style.subTitxt, {fontSize: 19}]}>#12323</Text>
-            <Text style={[style.subTitxt, {color: 'red'}]}>Pending</Text>
+            <Text style={[style.subTitxt, {color: 'red'}]}>{items.Status}</Text>
           </View>
         </View>
         <View style={style.cartItemsContainer}>
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-            }}>
+          <View style={style.itemLenthContainer}>
             <Text style={[style.subTitxt, {fontSize: 18}]}>
               {items.Order.length} Items(s)
             </Text>
@@ -47,41 +112,20 @@ function OrderDetail({navigation, route}) {
 
           {items.Order.map(element => {
             return (
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  marginBottom: '6%',
-                  marginTop: '3%',
-                }}>
-                <View
-                  style={{
-                    width: '50%',
-                    alignItems: 'center',
-                    justifyContent: 'space-evenly',
-                    flexDirection: 'row',
-                  }}>
+              <View style={style.orderContainer}>
+                <View style={style.subOrderContainer}>
                   {element.img ? (
                     <FastImage
                       resizeMode={FastImage.resizeMode.cover}
                       priority={FastImage.priority.high}
-                      style={{
-                        borderRadius: 34 / 2,
-                        width: 34,
-                        height: 34,
-                      }}
+                      style={style.orderImgs}
                       source={{uri: element.img}}
                     />
                   ) : (
                     <FastImage
                       resizeMode="cover"
                       priority={FastImage.priority.normal}
-                      style={{
-                        borderRadius: 34 / 2,
-                        width: 34,
-                        height: 34,
-                      }}
+                      style={style.orderImgs}
                       source={require('../../../assets/Images/man.png')}
                     />
                   )}
@@ -99,17 +143,60 @@ function OrderDetail({navigation, route}) {
           })}
         </View>
         <View style={style.cartItemsContainer}>
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-            }}>
+          <View style={style.priceTxtContainer}>
             <Text style={[style.subTitxt, {fontSize: 19}]}>Toal Price</Text>
             <Text style={[style.subTitxt, {fontSize: 19}]}>
               PKR {items.TotalPrice}
             </Text>
           </View>
+        </View>
+
+        {/* <View style={style.OrderProgress}>
+          {progress.map(element => {
+            return (
+              <>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    height: 63,
+                    width: 60,
+                  }}>
+                  <View
+                    style={[
+                      style.OrderProgressItems,
+                      {
+                        backgroundColor:
+                          items.Status === 'Pending' ? '#FFCB00' : 'white',
+                      },
+                    ]}>
+                    <Text style={style.txtSteps}>{element.step}</Text>
+                  </View>
+                  <Text style={style.txtStepTitle}>{element.title}</Text>
+                </View>
+                <View
+                  style={{
+                    alignSelf: 'center',
+                    height: 5,
+                    width: 9,
+                    backgroundColor: 'red',
+                  }}
+                />
+              </>
+            );
+          })}
+        </View> */}
+        <View
+          style={{
+            paddingHorizontal: '5%',
+            marginTop: 15,
+            marginBottom: 11,
+          }}>
+          <StepIndicator
+            customStyles={customStyles}
+            currentPosition={currentPosition}
+            labels={labels}
+          />
         </View>
         <Pressable
           style={style.contiBtn}
@@ -131,23 +218,8 @@ function OrderDetail({navigation, route}) {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-      }}>
-      <Text
-        style={{
-          fontFamily: 'RobotoSlab-Bold',
-          fontSize: 20,
-          color: 'black',
-          fontWeight: '600',
-          marginTop: '2%',
-          alignSelf: 'center',
-        }}>
-        Order Details
-      </Text>
-
+    <SafeAreaView style={style.container}>
+      <Text style={style.orderDetailTxt}>Order Details</Text>
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}

@@ -1,20 +1,16 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {
   View,
   Text,
-  Pressable,
-  SafeAreaView,
-  Dimensions,
-  StyleSheet,
-  Platform,
   Modal,
   Animated,
+  Pressable,
+  StyleSheet,
+  SafeAreaView,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
-import NetInfo from '@react-native-community/netinfo';
-import LottieView from 'lottie-react-native';
-import * as Animatable from 'react-native-animatable';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import Constraints from '../../Constraints/Constraints';
 
 const NetworkModal = props => {
   const dispatch = useDispatch();
@@ -29,13 +25,7 @@ const NetworkModal = props => {
         props.hideModalNetwork();
       }}
       visible={props.networkModal}>
-      <SafeAreaView
-        style={{
-          alignItems: 'center',
-          flex: 1,
-          justifyContent: 'center',
-          backgroundColor: '#000000aa',
-        }}>
+      <SafeAreaView style={styles.container}>
         <Animated.View
           style={[
             styles.containerr,
@@ -50,57 +40,22 @@ const NetworkModal = props => {
             😐
           </Text>
 
-          <Text
-            style={{
-              color: 'black',
-              fontFamily: 'RobotoSlab-Bold',
-              fontWeight: '700',
-              fontSize: 20,
-            }}>
-            Network Error
-          </Text>
+          <Text style={styles.networkTxt}>{Constraints.NETWORK_ERROR}</Text>
           <View style={{alignItems: 'center'}}>
-            <Text
-              style={{
-                color: 'black',
-                fontFamily: 'RobotoSlab-Bold',
-                fontWeight: '200',
-                fontSize: 14,
-              }}>
-              Your requested action could not be completed
+            <Text style={styles.networkTxtOne}>
+              {Constraints.NETWORK_CONNECTIVITY_ONE}
             </Text>
-            <Text
-              style={{
-                color: 'black',
-                fontFamily: 'RobotoSlab-Bold',
-                fontWeight: '200',
-                fontSize: 14,
-              }}>
-              due to connectivity issues
+            <Text style={styles.networkTxtOne}>
+              {Constraints.NETWORK_CONNECTIVITY}
             </Text>
           </View>
           <Pressable
-            style={[
-              styles.loginBtn,
-              {
-                width: '60%',
-                height: 55,
-                backgroundColor: 'red',
-              },
-            ]}
+            style={styles.loginBtn}
             onPress={() => {
               props.hideModalNetwork();
               props.checkConnection();
             }}>
-            <Text
-              style={{
-                fontFamily: 'RobotoSlab-Bold',
-                fontSize: 17,
-                fontWeight: '800',
-                color: 'white',
-              }}>
-              Try Again
-            </Text>
+            <Text style={styles.tryAgainTxt}>{Constraints.TRY_AGAIN}</Text>
             <Entypo name={'cross'} size={29} color={'white'} />
           </Pressable>
         </Animated.View>
@@ -110,8 +65,29 @@ const NetworkModal = props => {
 };
 export default NetworkModal;
 const styles = StyleSheet.create({
+  networkTxtOne: {
+    color: 'black',
+    fontFamily: 'RobotoSlab-Bold',
+    fontWeight: '200',
+    fontSize: 14,
+  },
+  networkTxt: {
+    color: 'black',
+    fontFamily: 'RobotoSlab-Bold',
+    fontWeight: '700',
+    fontSize: 20,
+  },
+  tryAgainTxt: {
+    fontFamily: 'RobotoSlab-Bold',
+    fontSize: 17,
+    fontWeight: '800',
+    color: 'white',
+  },
   container: {
+    alignItems: 'center',
     flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#000000aa',
   },
 
   containerr: {
@@ -129,10 +105,7 @@ const styles = StyleSheet.create({
   },
 
   loginBtn: {
-    width: '60%',
-    height: 50,
     borderRadius: 30,
-    backgroundColor: 'orange',
     justifyContent: 'space-between',
     paddingHorizontal: '7%',
     alignItems: 'center',
@@ -145,5 +118,8 @@ const styles = StyleSheet.create({
     elevation: 16,
     shadowOpacity: 0.2,
     shadowRadius: 3,
+    width: '60%',
+    height: 55,
+    backgroundColor: 'red',
   },
 });

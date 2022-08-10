@@ -1,0 +1,16 @@
+export default Images = {
+  logo: require('./../../assets/Images/chat.png'),
+  logoOtp: require('./../../assets/Images/otp.png'),
+  profileImgHome: require('./../../assets/Images/h.jpeg'),
+  loaderHome: require('./../../assets/Animations/load.json'),
+  WAVE_IMG: require('./../../assets/Images/waving-hand.png'),
+  alertComingSoon: require('./../../assets/Animations/alert.json'),
+  USER: require('./../../assets/Images/user.png'),
+  INFORMATION: require('./../../assets/Images/information.png'),
+  LOCATION: require('./../../assets/Images/location-2.png'),
+  TERM: require('./../../assets/Images/term.png'),
+  PADLOCK: require('./../../assets/Images/padlock.png'),
+  PlaceHolder_img: require('./../../assets/Images/man.png'),
+  ORDER_DONE: require('./../../assets/Animations/done.json'),
+  splashImg: require('./../../assets/Images/consult.png'),
+};

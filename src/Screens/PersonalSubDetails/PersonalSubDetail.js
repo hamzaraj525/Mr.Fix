@@ -1,37 +1,36 @@
 import React, {useState, useEffect} from 'react';
 import {
   Text,
-  Dimensions,
   View,
+  Linking,
   FlatList,
   Pressable,
+  Dimensions,
   SafeAreaView,
-  Linking,
   ActivityIndicator,
 } from 'react-native';
 import style from './style';
-import firestore from '@react-native-firebase/firestore';
-import * as Animatable from 'react-native-animatable';
 import FastImage from 'react-native-fast-image';
+import {useDispatch, useSelector} from 'react-redux';
+import * as Animatable from 'react-native-animatable';
+import firestore from '@react-native-firebase/firestore';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {addToCart, emptyCart} from '../../Redux/Action/actions';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Animations} from '../../../assets/Animations/Animation';
-import BottomTabs from '../../Components/BottomTabs/BottomTabs';
-import {useDispatch, useSelector} from 'react-redux';
-import {addToCart, removeFromCart, emptyCart} from '../../Redux/Action/actions';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import PersonalSearchModal from '../../Components/Modal/PersonalSearchModal';
+import Constraints from '../../Constraints/Constraints';
 const animations = Animations[Math.floor(Math.random() * Animations.length)];
 
 function PersonalSubDetail({navigation, route}) {
-  const [pList, setPList] = useState([]);
+  const dispatch = useDispatch();
   const [add, setAdd] = useState(false);
+  const [pList, setPList] = useState([]);
   const [loader, setLoader] = useState(true);
   const [PersonModal, setPersonaModal] = useState(false);
-  const dispatch = useDispatch();
-
   const {cartItems} = useSelector(reducers => reducers.cartReducer);
   console.log(cartItems, 'cartItems');
 
@@ -92,22 +91,9 @@ function PersonalSubDetail({navigation, route}) {
             useNativeDriver
             animation={animations}
             delay={index * 5}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 10,
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -132,16 +118,7 @@ function PersonalSubDetail({navigation, route}) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      fontFamily: 'RobotoSlab-Bold',
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -162,7 +139,7 @@ function PersonalSubDetail({navigation, route}) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -181,22 +158,9 @@ function PersonalSubDetail({navigation, route}) {
             useNativeDriver
             animation={animations}
             delay={index * 55}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                    borderRadius: 10,
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -221,16 +185,7 @@ function PersonalSubDetail({navigation, route}) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      fontFamily: 'RobotoSlab-Bold',
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -251,7 +206,7 @@ function PersonalSubDetail({navigation, route}) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -271,22 +226,9 @@ function PersonalSubDetail({navigation, route}) {
             useNativeDriver
             animation={animations}
             delay={index * 5}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                    borderRadius: 10,
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -311,16 +253,7 @@ function PersonalSubDetail({navigation, route}) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      fontFamily: 'RobotoSlab-Bold',
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -341,7 +274,7 @@ function PersonalSubDetail({navigation, route}) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -360,22 +293,9 @@ function PersonalSubDetail({navigation, route}) {
             useNativeDriver
             animation={animations}
             delay={index * 50}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                    borderRadius: 10,
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -400,16 +320,7 @@ function PersonalSubDetail({navigation, route}) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      fontFamily: 'RobotoSlab-Bold',
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -430,7 +341,7 @@ function PersonalSubDetail({navigation, route}) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -449,22 +360,9 @@ function PersonalSubDetail({navigation, route}) {
             useNativeDriver
             animation={animations}
             delay={index * 50}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                    borderRadius: 10,
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -489,16 +387,7 @@ function PersonalSubDetail({navigation, route}) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      fontFamily: 'RobotoSlab-Bold',
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -519,7 +408,7 @@ function PersonalSubDetail({navigation, route}) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -539,22 +428,9 @@ function PersonalSubDetail({navigation, route}) {
             useNativeDriver
             animation={animations}
             delay={index * 50}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                    borderRadius: 10,
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -580,16 +456,7 @@ function PersonalSubDetail({navigation, route}) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      fontFamily: 'RobotoSlab-Bold',
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -610,7 +477,7 @@ function PersonalSubDetail({navigation, route}) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -629,22 +496,9 @@ function PersonalSubDetail({navigation, route}) {
             useNativeDriver
             animation={animations}
             delay={index * 50}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                    borderRadius: 10,
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -669,16 +523,7 @@ function PersonalSubDetail({navigation, route}) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      fontFamily: 'RobotoSlab-Bold',
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -699,7 +544,7 @@ function PersonalSubDetail({navigation, route}) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -726,32 +571,12 @@ function PersonalSubDetail({navigation, route}) {
       {loader ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator style={{}} size="large" color="#0000ff" />
-          <Text
-            style={{
-              fontFamily: 'RobotoSlab-Bold',
-              fontSize: 16,
-              color: '#0000ff',
-              marginTop: 10,
-            }}>
-            Loading
-          </Text>
+          <Text style={style.loadTxt}>Loading</Text>
         </View>
       ) : (
         <>
-          <View
-            style={{
-              paddingVertical: 15,
-              borderBottomRightRadius: 70,
-              backgroundColor: '#F0F8FF',
-            }}>
-            <View
-              style={{
-                paddingHorizontal: '2%',
-                width: Dimensions.get('window').width,
-                alignItems: 'center',
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-              }}>
+          <View style={style.headerContainer}>
+            <View style={style.subContain}>
               <Pressable
                 style={{}}
                 onPress={() => {
@@ -769,24 +594,10 @@ function PersonalSubDetail({navigation, route}) {
                 size={30}
                 color={'#F0F8FF'}
               />
-              <Text
-                style={{
-                  fontFamily: 'RobotoSlab-Bold',
-                  width: '46%',
-                  color: 'black',
-                  fontWeight: '500',
-                  fontSize: 22,
-                }}>
-                Personal Services
+              <Text style={style.titleTxt}>
+                {Constraints.PERSONAL_SERVICES}
               </Text>
-
-              <View
-                style={{
-                  width: '20%',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                }}>
+              <View style={style.iconContain}>
                 <Pressable
                   onPress={() => {
                     Linking.openURL(`tel:${'03164558585'}`);
@@ -814,6 +625,7 @@ function PersonalSubDetail({navigation, route}) {
           </View>
           <View style={{paddingHorizontal: '5%', flex: 1}}>
             <FlatList
+              contentContainerStyle={{paddingBottom: '33%'}}
               data={pList}
               horizontal={false}
               showsVerticalScrollIndicator={false}
@@ -821,7 +633,9 @@ function PersonalSubDetail({navigation, route}) {
               renderItem={personalList}
               ListHeaderComponent={({item, index}) => {
                 return (
-                  <Text style={style.listHeaderTxt}>Choose from Listing</Text>
+                  <Text style={style.listHeaderTxt}>
+                    {Constraints.CHOOSE_FROM_LISTING}
+                  </Text>
                 );
               }}
               keyExtractor={(item, index) => 'key' + index}
@@ -838,45 +652,11 @@ function PersonalSubDetail({navigation, route}) {
                   onPress={() => {
                     navigation.navigate('Schedule');
                   }}>
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: 30,
-                      height: 30,
-                      borderWidth: 1.3,
-                      borderColor: 'white',
-                      borderRadius: 30 / 2,
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: 'RobotoSlab-Bold',
-                        color: 'white',
-                        fontSize: 19,
-                        fontWeight: '600',
-                      }}>
-                      {cartItems.length}
-                    </Text>
+                  <View style={style.cartItemsConatin}>
+                    <Text style={style.cartLength}>{cartItems.length}</Text>
                   </View>
-
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontFamily: 'RobotoSlab-Bold',
-                      fontSize: 19,
-                      fontWeight: '600',
-                    }}>
-                    Rs.{total}
-                  </Text>
-
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}>
-                    {/* <Text style={{color: 'white', fontSize: 19, fontWeight: '500'}}>
-              Continue
-            </Text> */}
+                  <Text style={style.cartTxtTotal}>Rs.{total}</Text>
+                  <View style={style.cartBtnArrow}>
                     <Fontisto
                       style={{marginLeft: 5}}
                       name={'arrow-right-l'}
@@ -890,7 +670,7 @@ function PersonalSubDetail({navigation, route}) {
           </View>
         </>
       )}
-      {/* <BottomTabs navigation={navigation} /> */}
+
       <PersonalSearchModal
         navigation={navigation}
         PersonModal={PersonModal}

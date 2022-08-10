@@ -1,26 +1,25 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {
-  StatusBar,
   View,
   Text,
-  Pressable,
   Image,
-  Dimensions,
   Animated,
-  SafeAreaView,
+  StatusBar,
+  Dimensions,
   StyleSheet,
+  SafeAreaView,
 } from 'react-native';
-import * as Animatable from 'react-native-animatable';
-
-import NetworkModal from './../../Components/Modal/NetworkModal';
-import NetInfo from '@react-native-community/netinfo';
+import Images from './../../Constraints/Images';
 import {useDispatch, useSelector} from 'react-redux';
-import Entypo from 'react-native-vector-icons/Entypo';
+import NetInfo from '@react-native-community/netinfo';
+import Constraints from '../../Constraints/Constraints';
+import NetworkModal from './../../Components/Modal/NetworkModal';
+
 function SplashScreen({navigation}) {
-  const [showModal, setShowModal] = useState(false);
-  const [color, setColor] = useState('white');
-  const [networkModal, setNetworkModal] = useState(false);
   const dispatch = useDispatch();
+  const [color, setColor] = useState('white');
+  const [showModal, setShowModal] = useState(false);
+  const [networkModal, setNetworkModal] = useState(false);
   const {userId} = useSelector(reducers => reducers.cartReducer);
   const scaleValue = useRef(new Animated.ValueXY({x: 0, y: 70})).current;
 
@@ -60,41 +59,17 @@ function SplashScreen({navigation}) {
   };
 
   return (
-    <SafeAreaView style={[styles.container, {}]}>
+    <SafeAreaView style={styles.container}>
       <StatusBar
         barStyle={'dark-content'}
         hidden={true}
         backgroundColor="#0E0A30"
       />
-      <View
-        style={{
-          width: Dimensions.get('window').width,
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
+      <View style={styles.subContainer}>
         <View style={{alignItems: 'center'}}>
-          <Image
-            style={styles.image}
-            source={require('./../../../assets/Images/consult.png')}
-          />
-          <Text
-            style={{
-              fontFamily: 'RobotoSlab-Bold',
-              fontSize: 32,
-              color: 'black',
-              marginTop: 7,
-            }}>
-            Mr.Fix
-          </Text>
-          <Text
-            style={{
-              fontFamily: 'RobotoSlab-Bold',
-              fontSize: 17,
-              color: 'black',
-              marginTop: 5,
-            }}>
-            We Fix it Right
-          </Text>
+          <Image style={styles.image} source={Images.splashImg} />
+          <Text style={styles.titleTxt}>{Constraints.MR_FIX}</Text>
+          <Text style={styles.subTitleTxt}>{Constraints.WE_FIX_IT_RIGHT}</Text>
         </View>
       </View>
 
@@ -120,5 +95,22 @@ const styles = StyleSheet.create({
   image: {
     width: 70,
     height: 70,
+  },
+  subContainer: {
+    width: Dimensions.get('window').width,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  titleTxt: {
+    fontFamily: 'RobotoSlab-Bold',
+    fontSize: 32,
+    color: 'black',
+    marginTop: 7,
+  },
+  subTitleTxt: {
+    fontFamily: 'RobotoSlab-Bold',
+    fontSize: 17,
+    color: 'black',
+    marginTop: 5,
   },
 });

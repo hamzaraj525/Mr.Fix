@@ -1,59 +1,35 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Text,
   View,
-  ScrollView,
-  Dimensions,
   Alert,
   Pressable,
+  ScrollView,
   SafeAreaView,
 } from 'react-native';
 import style from './style';
-import FastImage from 'react-native-fast-image';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import BottomTabs from '../../Components/BottomTabs/BottomTabs';
+import Share from 'react-native-share';
+import Images from '../../Constraints/Images';
 import auth from '@react-native-firebase/auth';
+import FastImage from 'react-native-fast-image';
 import {useDispatch, useSelector} from 'react-redux';
 import {logoutUser} from '../../Redux/Action/actions';
-import Share from 'react-native-share';
 import files from '../../../assets/Images/fileBase64';
+import Constraints from '../../Constraints/Constraints';
+import profileList from '../../DataStore/ProfileListData';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 function ProfileScreen({navigation, props, route}) {
   const dispatch = useDispatch();
-  const {userId, userName, userMail, userContact} = useSelector(
+  const {userId, userContact, userName} = useSelector(
     reducers => reducers.cartReducer,
   );
-
-  const profileList = [
-    {
-      name: 'Account',
-      icon: require('./../../../assets/Images/user.png'),
-    },
-    {
-      name: 'About Us',
-      icon: require('./../../../assets/Images/information.png'),
-    },
-    {
-      name: 'Terms & Conditions',
-      icon: require('./../../../assets/Images/term.png'),
-    },
-    {
-      name: 'Privacy Policy',
-      icon: require('./../../../assets/Images/padlock.png'),
-    },
-  ];
 
   const list = () => {
     return profileList.map((element, index) => {
       return (
-        <View
-          style={{
-            alignSelf: 'center',
-            marginBottom: 22,
-            width: Dimensions.get('window').width - 50,
-          }}
-          key={index}>
+        <View style={style.btnScreens} key={index}>
           <Pressable
             onPress={() => {
               if (element.name == 'About Us') {
@@ -64,49 +40,22 @@ function ProfileScreen({navigation, props, route}) {
                 navigation.navigate('Privacy');
               } else if (element.name == 'Account') {
                 navigation.navigate('ProfileEditt');
+              } else if (element.name == 'Address') {
+                navigation.navigate('Location');
               }
             }}
-            style={{
-              borderRadius: 15,
-              paddingVertical: '3%',
-              paddingHorizontal: '8%',
-              backgroundColor: '#ecf5fb',
-              alignItems: 'center',
-              flexDirection: 'row',
-            }}>
-            <View
-              style={{
-                width: 41,
-                height: 41,
-                borderRadius: 12,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+            style={style.btnNavigate}>
+            <View style={style.icon}>
               <FastImage
                 resizeMode="cover"
                 priority={FastImage.priority.normal}
-                style={{
-                  width: 26,
-                  height: 26,
-                }}
+                style={style.iconSize}
                 source={element.icon}
               />
             </View>
-            <View
-              style={{
-                borderRadius: 12,
-                marginLeft: '12%',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                width: '77%',
-                height: 33,
-              }}>
-              <Text style={{fontWeight: '500', fontFamily: 'RobotoSlab-Bold'}}>
-                {element.name}
-              </Text>
+            <View style={style.screenName}>
+              <Text style={style.screenNameTxt}>{element.name}</Text>
               <Ionicons
-                style={{}}
                 name={'arrow-forward-outline'}
                 size={30}
                 color={'black'}
@@ -132,7 +81,7 @@ function ProfileScreen({navigation, props, route}) {
             auth()
               .signOut()
               .then(() => {
-                dispatch(logoutUser(userId, userName, userMail, userContact));
+                dispatch(logoutUser(userId, userContact));
               })
               .then(() => {
                 console.log('User signed out!');
@@ -163,141 +112,55 @@ function ProfileScreen({navigation, props, route}) {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: 'white',
-      }}>
+    <SafeAreaView style={style.container}>
       <ScrollView
-        style={{
-          padding: '2%',
-          borderRadius: 33,
-          borderWidth: 0.2,
-          borderColor: 'black',
-        }}>
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        style={style.scroll}>
         <Pressable
-          style={{marginTop: '2%', marginLeft: '2%'}}
+          style={style.backBtn}
           onPress={() => {
             navigation.goBack();
           }}>
-          <Ionicons
-            style={{}}
-            name={'arrow-back-outline'}
-            size={30}
-            color={'black'}
-          />
+          <Ionicons name={'arrow-back-outline'} size={30} color={'black'} />
         </Pressable>
-        <Text
-          style={{
-            fontFamily: 'RobotoSlab-Bold',
-            marginLeft: '2%',
-            marginTop: '7%',
-            color: 'black',
-            width: '55%',
-            fontWeight: '600',
-            fontSize: 29,
-            marginBottom: 3,
-          }}>
-          My
-        </Text>
+        <Text style={style.MyTxt}>My</Text>
 
-        <Text
-          style={{
-            marginLeft: '2%',
-            fontWeight: '600',
-            color: 'black',
-            width: '55%',
-            fontSize: 27,
-            marginBottom: '10%',
-            fontFamily: 'RobotoSlab-Bold',
-          }}>
-          Profile 😃
-        </Text>
+        <Text style={style.profileTxt}>{Constraints.PROFILE} 😃</Text>
 
-        <View
-          style={{
-            marginBottom: '6%',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-          }}>
+        <View style={style.btnsContainer}>
           <Pressable
-            style={{
-              alignItems: 'center',
-              height: 55,
-              width: 55,
-              borderRadius: 55 / 2,
-              justifyContent: 'center',
-              borderWidth: 0.9,
-              borderColor: 'grey',
-            }}
+            style={style.shareBtn}
             onPress={() => {
               shareApp();
             }}>
-            <FontAwesome5
-              style={{}}
-              name={'share-alt'}
-              size={25}
-              color={'black'}
-            />
+            <FontAwesome5 name={'share-alt'} size={25} color={'black'} />
           </Pressable>
 
           <Pressable
-            style={{
-              alignItems: 'center',
-              width: 115,
-              height: 115,
-              borderRadius: 115 / 2,
-              justifyContent: 'center',
-              borderWidth: 0.5,
-              borderColor: 'grey',
-            }}
+            style={style.ProfileimgBtn}
             onPress={() => {
               navigation.navigate('ProfileEditt');
             }}>
             <FastImage
               resizeMode="cover"
               priority={FastImage.priority.normal}
-              style={{
-                borderRadius: 100 / 2,
-                width: 100,
-                height: 100,
-              }}
-              source={require('../../../assets/Images/h.jpeg')}
+              style={style.Profileimg}
+              source={Images.profileImgHome}
             />
           </Pressable>
           <Pressable
-            style={{
-              alignItems: 'center',
-              height: 55,
-              width: 55,
-              borderRadius: 55 / 2,
-              justifyContent: 'center',
-              borderWidth: 0.9,
-              borderColor: 'grey',
-            }}
+            style={style.logoutBtn}
             onPress={() => {
               showAlert();
             }}>
-            <Ionicons style={{}} name={'log-out'} size={30} color={'black'} />
+            <Ionicons name={'log-out'} size={30} color={'black'} />
           </Pressable>
         </View>
 
-        <Text
-          style={{
-            fontFamily: 'RobotoSlab-Bold',
-            alignSelf: 'center',
-            fontWeight: '600',
-            color: 'black',
-            fontSize: 24,
-            marginBottom: '8%',
-          }}>
-          {userName}
-        </Text>
+        <Text style={style.userNameTxt}>{userName}</Text>
         {list()}
       </ScrollView>
-      {/* <BottomTabs navigation={navigation} /> */}
     </SafeAreaView>
   );
 }

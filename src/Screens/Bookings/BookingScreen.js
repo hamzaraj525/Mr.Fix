@@ -1,34 +1,28 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {
-  Text,
-  FlatList,
-  View,
-  Pressable,
-  SafeAreaView,
-  Animated,
-  ScrollView,
-} from 'react-native';
 import style from './style';
 import database from '@react-native-firebase/database';
-import firestore from '@react-native-firebase/firestore';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FastImage from 'react-native-fast-image';
-import {Transition, Transitioning} from 'react-native-reanimated';
-import BottomTabs from '../../Components/BottomTabs/BottomTabs';
+import React, {useRef, useState, useEffect} from 'react';
 import {connect, useDispatch, useSelector} from 'react-redux';
-import {addUserid, logoutUser} from '../../Redux/Action/actions';
-import {useId} from 'react';
+import BottomTabs from '../../Components/BottomTabs/BottomTabs';
+import {
+  Text,
+  View,
+  Pressable,
+  ActivityIndicator,
+  SafeAreaView,
+  ScrollView,
+} from 'react-native';
 
 function BookingScreen({navigation, route}) {
+  const dispatch = useDispatch();
+  const [loader, setLoader] = useState(false);
   const [color, setColor] = useState(0);
   const [list, setList] = useState([]);
-
-  const dispatch = useDispatch();
   const {cartItems, userId, userName, userMail} = useSelector(
     reducers => reducers.cartReducer,
   );
 
   useEffect(() => {
+    setLoader(true);
     database()
       .ref('/cartItems')
       .on('value', snapshot => {
@@ -45,88 +39,28 @@ function BookingScreen({navigation, route}) {
             userName: child.val().userName,
             userIdd: child.val().userId,
             key: child.val().key,
+            Status: child.val().Status,
           });
         });
 
+        setLoader(false);
         setList(li);
       });
   }, []);
   const changeColor = id => {
     setColor(id);
   };
-  //   <View key={item.id} style={style.cartItemsContainer}>
-  //   <View style={style.subContainerCartItems}>
-  //     <View style={style.subContainerCartItemsTwo}>
-  //       <Ionicons name="mail-outline" size={40} color={'black'} />
-  //     </View>
-  //     <Text
-  //       style={[
-  //         style.subTitxt,
-  //         {fontSize: 17, marginRight: '20%', fontWeight: '500'},
-  //       ]}>
-  //       {item.userName}
-  //     </Text>
-  //   </View>
 
-  //   <View
-  //     style={{
-  //       marginBottom: 5,
-  //       alignItems: 'center',
-  //       justifyContent: 'space-between',
-  //       flexDirection: 'row',
-  //     }}>
-  //     <Text style={style.subTitxt}>Schedule</Text>
-  //     <Text style={style.subTitxt}>{item.reservation}</Text>
-  //   </View>
-
-  //   <View
-  //     style={{
-  //       marginBottom: 5,
-  //       alignItems: 'center',
-  //       justifyContent: 'space-between',
-  //       flexDirection: 'row',
-  //     }}>
-  //     <Text style={style.subTitxt}>Status</Text>
-  //     <Text style={style.cartItemTitle}>{item.message}</Text>
-  //   </View>
-
-  //   <View
-  //     style={{
-  //       alignItems: 'center',
-  //       justifyContent: 'space-between',
-  //       flexDirection: 'row',
-  //     }}>
-  //     <Text style={style.subTitxt}>Order Number</Text>
-  //     <Text style={style.subTitxt}>{item.OrderTime}</Text>
-  //   </View>
-  // </View>
   const previousOrders = () => {
     return list.map(item => {
       return (
         <View key={item.key}>
-          {item.userIdd === userId ? (
+          {item.userIdd === userId && item.Status === 'Completed' ? (
             <>
               {console.log('elemts Order----' + JSON.stringify(item.Order))}
               {item.Order.map(element => {
                 return (
                   <View key={element.key} style={style.cartItemsContainer}>
-                    {/* <View style={style.subContainerCartItems}>
-                      <View style={style.subContainerCartItemsTwo}>
-                        <FastImage
-                          style={{width: 60, height: 60}}
-                          priority={FastImage.priority.high}
-                          source={{uri: element.img}}
-                        />
-                      </View>
-                      <Text
-                        style={[
-                          style.subTitxt,
-                          {fontSize: 17, fontWeight: '500'},
-                        ]}>
-                        {element.type}
-                      </Text>
-                    </View> */}
-
                     <View
                       style={{
                         marginBottom: 5,
@@ -150,7 +84,7 @@ function BookingScreen({navigation, route}) {
                       }}>
                       <Text style={style.subTitxt}>#12323</Text>
                       <Text style={[style.subTitxt, {color: '#FB336B'}]}>
-                        Pending
+                        {item.Status}
                       </Text>
                     </View>
                     <View
@@ -192,6 +126,158 @@ function BookingScreen({navigation, route}) {
           ) : null}
         </View>
       );
+    });
+  };
+
+  const confirmedOrders = () => {
+    return list.map(item => {
+      return (
+        <View key={item.key}>
+          {(item.userIdd === userId && item.Status === 'Confirmed') ||
+          (item.Status !== 'Pending' && item.Status !== 'Completed') ? (
+            <>
+              {console.log('elemts Order----' + JSON.stringify(item.Order))}
+              {item.Order.map(element => {
+                return (
+                  <View key={element.key} style={style.cartItemsContainer}>
+                    <View
+                      style={{
+                        marginBottom: 5,
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flexDirection: 'row',
+                      }}>
+                      <Text style={[style.subTitxt, {color: 'grey'}]}>
+                        {item.reservation}
+                      </Text>
+                      <Text style={[style.subTitxt, {color: 'white'}]}>
+                        {item.reservation}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flexDirection: 'row',
+                        marginTop: 5,
+                      }}>
+                      <Text style={style.subTitxt}>#12323</Text>
+                      <Text style={[style.subTitxt, {color: '#FB336B'}]}>
+                        {item.Status}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        marginTop: 5,
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flexDirection: 'row',
+                      }}>
+                      <Text style={style.subTitxt}>
+                        {item.Order.length} Items(s)
+                      </Text>
+                      <Text style={[style.subTitxt, {}]}>
+                        {item.TotalPrice}
+                      </Text>
+                    </View>
+                    <Pressable
+                      style={style.contiBtn}
+                      onPress={() => {
+                        navigation.navigate('OrderDetail', {
+                          items: item,
+                          item2: element,
+                        });
+                      }}>
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontFamily: 'RobotoSlab-Bold',
+                          fontSize: 19,
+                          fontWeight: '600',
+                        }}>
+                        View Details
+                      </Text>
+                    </Pressable>
+                  </View>
+                );
+              })}
+            </>
+          ) : null}
+        </View>
+      );
+    });
+  };
+  const pendingOrders = () => {
+    return list.map(item => {
+      if (item.userIdd === userId && item.Status === 'Pending') {
+        return item.Order.map(element => {
+          return (
+            <View key={element.key} style={style.cartItemsContainer}>
+              <View
+                style={{
+                  marginBottom: 5,
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                }}>
+                <Text style={[style.subTitxt, {color: 'grey'}]}>
+                  {item.reservation}
+                </Text>
+                <Text style={[style.subTitxt, {color: 'white'}]}>
+                  {item.reservation}
+                </Text>
+              </View>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  marginTop: 5,
+                }}>
+                <Text style={style.subTitxt}>#12323</Text>
+
+                <Text
+                  style={[
+                    style.subTitxt,
+                    {
+                      color: '#FB336B',
+                    },
+                  ]}>
+                  {item.Status}
+                </Text>
+              </View>
+              <View
+                style={{
+                  marginTop: 5,
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                }}>
+                <Text style={style.subTitxt}>{item.Order.length} Items(s)</Text>
+                <Text style={[style.subTitxt, {}]}>{item.TotalPrice}</Text>
+              </View>
+              <Pressable
+                style={style.contiBtn}
+                onPress={() => {
+                  navigation.navigate('OrderDetail', {
+                    items: item,
+                    item2: element,
+                  });
+                }}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontFamily: 'RobotoSlab-Bold',
+                    fontSize: 19,
+                    fontWeight: '600',
+                  }}>
+                  View Details
+                </Text>
+              </Pressable>
+            </View>
+          );
+        });
+      }
     });
   };
 
@@ -257,12 +343,49 @@ function BookingScreen({navigation, route}) {
           </Text>
         </Pressable>
       </View>
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: '35%'}}
         style={{marginTop: '2%'}}>
-        {color === 3 ? <View style={{flex: 1}}>{previousOrders()}</View> : null}
+        {color === 3 ? (
+          <View style={{flex: 1}}>
+            {loader ? (
+              <ActivityIndicator
+                style={{marginTop: 50}}
+                size="large"
+                color="#0000ff"
+              />
+            ) : (
+              previousOrders()
+            )}
+          </View>
+        ) : color === 2 ? (
+          <View style={{flex: 1}}>
+            {loader ? (
+              <ActivityIndicator
+                style={{marginTop: 50}}
+                size="large"
+                color="#0000ff"
+              />
+            ) : (
+              confirmedOrders()
+            )}
+          </View>
+        ) : color === 1 ? (
+          <View style={{flex: 1}}>
+            {loader ? (
+              <ActivityIndicator
+                style={{marginTop: 50}}
+                size="large"
+                color="#0000ff"
+              />
+            ) : (
+              pendingOrders()
+            )}
+          </View>
+        ) : null}
       </ScrollView>
       <BottomTabs navigation={navigation} />
     </SafeAreaView>

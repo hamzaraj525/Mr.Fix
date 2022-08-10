@@ -1,9 +1,12 @@
 const initialState = {
   cartItems: [],
   userId: '',
+  userContact: '',
+  userlocation: '',
   userName: '',
   userMail: '',
-  userContact: '',
+  lat: null,
+  long: null,
 };
 export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -27,9 +30,7 @@ export const cartReducer = (state = initialState, action) => {
     case 'ADD_USER_ID':
       return {
         ...state,
-        userId: action.payload,
-        userName: action.userName,
-        userMail: action.userMail,
+        userId: action.userId,
         userContact: action.userContact,
       };
     case 'USER_NAME_UPDATE':
@@ -46,9 +47,22 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         userId: null,
-        userName: null,
-        userMail: null,
         userContact: null,
+      };
+    case 'USER_LOCATION':
+      return {
+        ...state,
+        userlocation: action.userlocation,
+      };
+    case 'USER_LAT':
+      return {
+        ...state,
+        lat: action.lat,
+      };
+    case 'USER_LONG':
+      return {
+        ...state,
+        long: action.long,
       };
   }
   return state;

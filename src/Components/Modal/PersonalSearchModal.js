@@ -2,29 +2,28 @@ import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
+  Modal,
+  FlatList,
   Pressable,
-  SafeAreaView,
-  Dimensions,
   TextInput,
   StyleSheet,
-  FlatList,
-  Modal,
+  SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
-import {addToCart, removeFromCart, emptyCart} from '../../Redux/Action/actions';
-import {connect, useDispatch, useSelector} from 'react-redux';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import firestore from '@react-native-firebase/firestore';
-import {ActivityIndicator} from 'react-native-paper';
-import * as Animatable from 'react-native-animatable';
 import FastImage from 'react-native-fast-image';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ActivityIndicator} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
+import Entypo from 'react-native-vector-icons/Entypo';
+import * as Animatable from 'react-native-animatable';
+import firestore from '@react-native-firebase/firestore';
+import Constraints from './../../Constraints/Constraints';
+
+import {addToCart, emptyCart} from '../../Redux/Action/actions';
 
 function PersonalSearchModal({navigation, route, PersonModal, hideModal}) {
-  const [showLoader, setLoader] = useState(true);
   const [input, setInput] = useState('');
   const [homeList, setHomeList] = useState([]);
+  const [showLoader, setLoader] = useState(false);
   const [masterList, setMasterList] = useState([]);
 
   const dispatch = useDispatch();
@@ -76,6 +75,13 @@ function PersonalSearchModal({navigation, route, PersonModal, hideModal}) {
         alert('Your Network Connection Is Not Good');
       });
   };
+  const addtoCart = (item, index) => {
+    hideModal();
+    dispatch(addToCart(item, index));
+    setTimeout(() => {
+      navigation.navigate('Schedule');
+    }, 700);
+  };
 
   const renderSearchModal = ({item, index}) => {
     return (
@@ -85,20 +91,8 @@ function PersonalSearchModal({navigation, route, PersonModal, hideModal}) {
         animation={'bounceInUp'}
         delay={index * 50}>
         <Pressable onPress={() => {}} style={styles.cartItemsContainer}>
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-            }}>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 95,
-                height: 95,
-                borderRadius: 10,
-              }}>
+          <View style={styles.subContainer}>
+            <View style={styles.img}>
               <FastImage
                 resizeMode={FastImage.resizeMode.cover}
                 style={styles.cartItemImage}
@@ -108,35 +102,21 @@ function PersonalSearchModal({navigation, route, PersonModal, hideModal}) {
                 }}
               />
             </View>
-
-            <View
-              style={{
-                marginLeft: '4%',
-                flexDirection: 'column',
-              }}>
+            <View style={styles.cartItemDetailsContainer}>
               <Text style={styles.cartItemTitle}>{item.title}</Text>
               <Text style={styles.subTitxt}>{item.SubTitle}</Text>
               <Text style={styles.cartItemPrice}>PKR {item.Price}</Text>
               <TouchableOpacity
                 onPress={() => {
-                  hideModal();
-                  dispatch(addToCart(item, index));
-                  navigation.navigate('Schedule');
+                  addtoCart(item, index);
                 }}
-                activeOpacity={0.7}
-                style={{
-                  backgroundColor: 'orange',
-                  borderRadius: 20,
-                  width: 60,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
+                style={styles.cartItemButton}>
                 <Text
                   style={{
                     fontWeight: '500',
                     fontSize: 15,
                   }}>
-                  ADD
+                  {Constraints.ADD}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -167,19 +147,9 @@ function PersonalSearchModal({navigation, route, PersonModal, hideModal}) {
         onRequestClose={() => {
           hideModal();
         }}>
-        <SafeAreaView
-          style={{
-            flex: 1,
-            backgroundColor: 'white',
-          }}>
+        <SafeAreaView style={styles.modalSafeareaContainer}>
           <Pressable
-            style={{
-              width: 60,
-              height: 22,
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingHorizontal: '3%',
-            }}
+            style={{paddingHorizontal: '3%', paddingVertical: '3%'}}
             onPress={() => {
               dispatch(emptyCart());
               hideModal();
@@ -188,12 +158,7 @@ function PersonalSearchModal({navigation, route, PersonModal, hideModal}) {
           </Pressable>
           <TextInput
             autoFocus={true}
-            style={{
-              fontSize: 18,
-              marginTop: '3%',
-              paddingHorizontal: '5%',
-              color: 'black',
-            }}
+            style={styles.searchInput}
             onChangeText={text => {
               setInput(text);
               searchFlter(text);
@@ -215,12 +180,7 @@ function PersonalSearchModal({navigation, route, PersonModal, hideModal}) {
               color="#0000ff"
             />
           ) : (
-            <View
-              style={{
-                flex: 1,
-                paddingHorizontal: '3%',
-                paddingVertical: '3%',
-              }}>
+            <View style={styles.searchContainer}>
               {searchPersonalServices()}
             </View>
           )}
@@ -232,6 +192,13 @@ function PersonalSearchModal({navigation, route, PersonModal, hideModal}) {
 export default PersonalSearchModal;
 
 const styles = StyleSheet.create({
+  searchInput: {
+    fontSize: 18,
+
+    paddingHorizontal: '5%',
+    color: 'black',
+  },
+  searchContainer: {flex: 1, paddingHorizontal: '3%', paddingVertical: '3%'},
   container: {
     flex: 1,
   },
@@ -271,5 +238,33 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '500',
     marginBottom: 5,
+  },
+  cartItemDetailsContainer: {marginLeft: '4%', flexDirection: 'column'},
+  subContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  img: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 95,
+    height: 95,
+    borderRadius: 10,
+  },
+  emtyCart: {
+    width: 60,
+    height: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: '3%',
+  },
+  modalSafeareaContainer: {flex: 1, backgroundColor: 'white'},
+  cartItemButton: {
+    backgroundColor: 'orange',
+    borderRadius: 20,
+    width: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

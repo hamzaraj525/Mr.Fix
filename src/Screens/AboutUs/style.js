@@ -1,3 +1,97 @@
 import {Dimensions, StyleSheet} from 'react-native';
 
-export default StyleSheet.create({});
+export default StyleSheet.create({
+  container: {flex: 1, backgroundColor: 'white'},
+  header: {
+    marginTop: '4%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: '5%',
+  },
+  backBtn: {alignItems: 'center', justifyContent: 'center'},
+  titleTxt: {
+    fontFamily: 'RobotoSlab-Bold',
+    color: 'black',
+    fontWeight: '500',
+    fontSize: 21,
+  },
+  bottomLine: {
+    alignSelf: 'center',
+    width: '22%',
+    height: 0.9,
+    marginTop: -1,
+    backgroundColor: 'black',
+  },
+  whoTxt: {
+    fontFamily: 'RobotoSlab-Bold',
+    marginTop: '5%',
+    color: 'black',
+    fontWeight: '700',
+    fontSize: 21,
+  },
+  whoDetailTxt: {
+    color: 'black',
+    fontFamily: 'RobotoSlab-Bold',
+    fontWeight: '400',
+    marginTop: '3%',
+    fontSize: 14,
+    lineHeight: 18,
+  },
+  whatWeTxt: {
+    fontFamily: 'RobotoSlab-Bold',
+    color: 'black',
+    fontWeight: '700',
+    marginTop: '3%',
+    fontSize: 21,
+  },
+  whatWeTxtDetailTxt: {
+    color: 'black',
+    fontFamily: 'RobotoSlab-Bold',
+    fontWeight: '400',
+    marginTop: '3%',
+    fontSize: 14,
+    lineHeight: 18,
+  },
+  howWeDo: {
+    fontFamily: 'RobotoSlab-Bold',
+    color: 'black',
+    fontWeight: '700',
+    marginTop: '2%',
+    fontSize: 21,
+  },
+  howWeDoDetailTxt: {
+    color: 'black',
+    fontFamily: 'RobotoSlab-Bold',
+    fontWeight: '400',
+    marginTop: '3%',
+    fontSize: 14,
+    lineHeight: 18,
+  },
+  aboutData: {
+    width: 270,
+    height: 170,
+    marginTop: '1%',
+    marginRight: 20,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    backgroundColor: '#ecf5fb',
+  },
+  titleTxt: {
+    fontFamily: 'RobotoSlab-Bold',
+    color: 'black',
+    fontWeight: '800',
+    fontSize: 15,
+  },
+
+  ItemImg: {width: 40, height: 40, tintColor: 'pink'},
+
+  subTitleTxt: {
+    fontFamily: 'RobotoSlab-Bold',
+    paddingHorizontal: '7%',
+    color: 'black',
+    fontWeight: '300',
+    fontSize: 10,
+  },
+});

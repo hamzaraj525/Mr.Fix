@@ -103,4 +103,5 @@ export default StyleSheet.create({
     borderWidth: 0.5,
     borderColor: 'grey',
   },
+  backArrow: {marginTop: '2%', marginLeft: '2%'},
 });

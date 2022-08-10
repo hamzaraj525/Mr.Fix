@@ -1,54 +1,52 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  Button,
-  Alert,
+  TextInput,
   SafeAreaView,
 } from 'react-native';
 
-const showAlert = () => {
-  Alert.alert('Confirmation', 'Are you sure you want to sign out ?', [
-    {
-      text: 'Cancel',
-      onPress: () => alert('Cancel Pressed'),
-      style: 'cancel',
-    },
-    {
-      text: 'OK',
-      onPress: () => {
-        alert('Sign Out');
-      },
-    },
-  ]);
-};
 function demo() {
+  const [text, setText] = useState('');
+  const [Password, setPassword] = useState('');
   return (
     <SafeAreaView style={styles.box}>
-      <View style={styles.subView}>
-        <Text style={styles.txt}>hello</Text>
+      <View style={styles.loginView}>
+        <Text style={styles.txt}>lOGIN</Text>
+        <TextInput
+          value={text}
+          onChangeText={txt => {
+            setText(txt);
+          }}
+          placeholder="Email"
+          placeholderTextColor={'grey'}
+          style={{
+            width: '50%',
+            height: 50,
+            borderWidth: 1,
+            borderColor: 'black',
+            fontSize: 30,
+            fontFamily: 'RobotoSlab-Bold',
+          }}
+        />
+        <TextInput
+          secureTextEntry={false}
+          style={styles.PasswordStyle}
+          value={Password}
+          onChangeText={psd => {
+            setPassword(psd);
+          }}
+          placeholder="Password"
+          placeholderTextColor={'grey'}
+        />
         <TouchableOpacity
           onPress={() => {
-            Alert.alert('Confirmation', 'Are you sure you want to sign out ?', [
-              {
-                text: 'Cancel',
-                onPress: () => alert('Cancel Pressed'),
-                style: 'cancel',
-              },
-              {
-                text: 'OK',
-                onPress: () => {
-                  alert('Sign Out');
-                },
-              },
-            ]);
+            alert('Email:' + text + ' \n' + 'Password:' + Password);
           }}>
           <Text style={styles.txt}> press me</Text>
         </TouchableOpacity>
-
-        <View style={{backgroundColor: 'red', width: 44, height: 44}} />
       </View>
     </SafeAreaView>
   );
@@ -58,17 +56,27 @@ export default demo;
 const styles = StyleSheet.create({
   box: {
     flex: 1,
-    backgroundColor: 'brown',
+    justifyContent: 'center',
+    backgroundColor: 'white',
   },
   txt: {
     color: 'orange',
-    fontSize: 50,
+    fontSize: 30,
     fontFamily: 'RobotoSlab-Bold',
   },
-  subView: {
+  loginView: {
     alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'blue',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    height: '30%',
+    backgroundColor: 'red',
+  },
+  PasswordStyle: {
+    borderWidth: 1,
+    fontSize: 30,
+    fontFamily: 'RobotoSlab-Bold',
+    color: 'grey',
+    height: 50,
+    width: '50%',
   },
 });

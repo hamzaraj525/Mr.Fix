@@ -1,6 +1,7 @@
 import {Dimensions, StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
+  container: {flex: 1, backgroundColor: 'white'},
   white: {
     width: 110,
     height: 40,
@@ -19,5 +20,63 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: Dimensions.get('window').width / 2,
+  },
+  bottomLine: {
+    alignSelf: 'center',
+    width: '22%',
+    height: 0.9,
+    marginTop: -1,
+    backgroundColor: 'black',
+  },
+  btnCheckOutTxt: {
+    fontFamily: 'RobotoSlab-Bold',
+    color: 'red',
+    fontWeight: '500',
+    fontSize: 20,
+  },
+  btnCheckOut: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: 50,
+    marginTop: 10,
+    borderRadius: 5,
+  },
+  shreBtn: {alignItems: 'center', justifyContent: 'center'},
+  titleSchedule: {
+    fontFamily: 'RobotoSlab-Bold',
+    color: 'black',
+    fontWeight: '500',
+    fontSize: 21,
+  },
+  btnBack: {alignItems: 'center', justifyContent: 'center'},
+  header: {
+    marginTop: '4%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: '5%',
+  },
+  timeTitle: {
+    fontWeight: '600',
+    fontFamily: 'RobotoSlab-Bold',
+    color: '#004379',
+    fontSize: 17,
+  },
+  datePickerBtn: {
+    marginTop: '6%',
+    alignSelf: 'center',
+    width: '54%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scheduleSubTitle: {
+    alignSelf: 'center',
+    fontFamily: 'RobotoSlab-Bold',
+    color: 'black',
+    fontWeight: '500',
+    fontSize: 20,
+    marginTop: '5%',
   },
 });

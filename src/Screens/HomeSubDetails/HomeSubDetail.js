@@ -1,38 +1,33 @@
 import React, {useState, useEffect} from 'react';
 import {
   Text,
-  Dimensions,
   View,
-  Modal,
   FlatList,
-  ScrollView,
   Pressable,
-  SafeAreaView,
+  Dimensions,
   Linking,
+  SafeAreaView,
   ActivityIndicator,
 } from 'react-native';
 import style from './style';
-import {
-  addToCart,
-  removeFromCart,
-  emptyCart,
-} from '../../../src/Redux/Action/actions';
-import {connect, useDispatch, useSelector} from 'react-redux';
-// import * as actionCreators from '../../../src/Redux/slice/cartSlice';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import database from '@react-native-firebase/database';
-import firestore from '@react-native-firebase/firestore';
-import * as Animatable from 'react-native-animatable';
 import FastImage from 'react-native-fast-image';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {useDispatch, useSelector} from 'react-redux';
+import * as Animatable from 'react-native-animatable';
+import database from '@react-native-firebase/database';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import firestore from '@react-native-firebase/firestore';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {Animations} from '../../../assets/Animations/Animation';
 import SearchModal from './../../Components/Modal/SearchModal';
-import BottomTabs from '../../Components/BottomTabs/BottomTabs';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {Animations} from '../../../assets/Animations/Animation';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {addToCart, emptyCart} from '../../../src/Redux/Action/actions';
+import Constraints from '../../Constraints/Constraints';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 const animations = Animations[Math.floor(Math.random() * Animations.length)];
 
 function HomeSubDetail({navigation, route}, props) {
+  const dispatch = useDispatch();
   const [realTime, setRealTime] = useState([]);
   const [list, setList] = useState([]);
   const [add, setAdd] = useState(false);
@@ -42,7 +37,7 @@ function HomeSubDetail({navigation, route}, props) {
   const {cartItems} = useSelector(reducers => reducers.cartReducer);
 
   const items = cartItems;
-  // const total = 200;
+
   const total = items
     .map(item => Number(item.Price))
     .reduce((prev, curr) => prev + curr, 0);
@@ -73,21 +68,12 @@ function HomeSubDetail({navigation, route}, props) {
           console.log(child.val());
           li.push({
             key: child.key,
-            // Title: child.val().title,
-            // Price: child.val().Price,
-            // items: child.val().items,
-            // SubTitle: child.val().SubTitle,
             Order: child.val().Order,
             OrderTime: child.val().OrderTime,
             TotalPrice: child.val().TotalPrice,
             reservation: child.val().reservation,
             message: child.val().message,
           });
-          //   if (child.val().age > 6) {
-          //     this.notifyHost();
-          //   } else {
-          //     this.handleNotification();
-          //   }
         });
         console.log('done');
         setRealTime(li);
@@ -116,7 +102,6 @@ function HomeSubDetail({navigation, route}, props) {
         alert('Your Network Connection Is Not Good');
       });
   };
-  const dispatch = useDispatch();
 
   const renderHomeServiceDetail = ({item, index}) => {
     const {Item} = route.params;
@@ -129,22 +114,9 @@ function HomeSubDetail({navigation, route}, props) {
             useNativeDriver
             animation={'bounceInUp'}
             delay={index * 50}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                    borderRadius: 10,
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -168,15 +140,7 @@ function HomeSubDetail({navigation, route}, props) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -197,7 +161,7 @@ function HomeSubDetail({navigation, route}, props) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -216,22 +180,9 @@ function HomeSubDetail({navigation, route}, props) {
             useNativeDriver
             animation={'bounceInUp'}
             delay={index * 50}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                    borderRadius: 10,
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -257,15 +208,7 @@ function HomeSubDetail({navigation, route}, props) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -286,7 +229,7 @@ function HomeSubDetail({navigation, route}, props) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -305,22 +248,9 @@ function HomeSubDetail({navigation, route}, props) {
             useNativeDriver
             animation={'bounceInUp'}
             delay={index * 50}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                    borderRadius: 10,
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -346,15 +276,7 @@ function HomeSubDetail({navigation, route}, props) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -375,7 +297,7 @@ function HomeSubDetail({navigation, route}, props) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -394,22 +316,9 @@ function HomeSubDetail({navigation, route}, props) {
             useNativeDriver
             animation={'bounceInUp'}
             delay={index * 50}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                    borderRadius: 10,
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -434,15 +343,7 @@ function HomeSubDetail({navigation, route}, props) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -463,7 +364,7 @@ function HomeSubDetail({navigation, route}, props) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -482,22 +383,9 @@ function HomeSubDetail({navigation, route}, props) {
             useNativeDriver
             animation={'bounceInUp'}
             delay={index * 50}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                    borderRadius: 10,
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -522,15 +410,7 @@ function HomeSubDetail({navigation, route}, props) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -551,7 +431,7 @@ function HomeSubDetail({navigation, route}, props) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -570,22 +450,9 @@ function HomeSubDetail({navigation, route}, props) {
             iterationCount={1}
             useNativeDriver
             delay={index * 50}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                    borderRadius: 10,
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -611,15 +478,7 @@ function HomeSubDetail({navigation, route}, props) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -640,7 +499,7 @@ function HomeSubDetail({navigation, route}, props) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -659,22 +518,10 @@ function HomeSubDetail({navigation, route}, props) {
             useNativeDriver
             animation={'bounceInUp'}
             delay={index * 50}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                    borderRadius: 10,
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
+                  {' '}
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -699,15 +546,7 @@ function HomeSubDetail({navigation, route}, props) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -728,7 +567,7 @@ function HomeSubDetail({navigation, route}, props) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -747,22 +586,9 @@ function HomeSubDetail({navigation, route}, props) {
             useNativeDriver
             animation={'bounceInUp'}
             delay={index * 50}>
-            <Pressable onPress={() => {}} style={style.cartItemsContainer}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 120,
-                    height: 190,
-                    backgroundColor: '#F0F8FF',
-                    borderRadius: 10,
-                  }}>
+            <Pressable style={style.cartItemsContainer}>
+              <View style={style.cartItemsSubContain}>
+                <View style={style.img}>
                   <FastImage
                     resizeMode={FastImage.resizeMode.cover}
                     style={style.cartItemImage}
@@ -787,15 +613,7 @@ function HomeSubDetail({navigation, route}, props) {
               {cartItems !== undefined &&
               cartItems.find(index => index.key === item.key) ? (
                 <Pressable onPress={() => {}} style={style.plusContainer}>
-                  <Text
-                    style={{
-                      marginLeft: '22%',
-                      fontWeight: '400',
-                      fontSize: 13,
-                      color: 'black',
-                    }}>
-                    Done
-                  </Text>
+                  <Text style={style.doneBtn}>{Constraints.DONE_BTN}</Text>
 
                   <View onPress={() => {}} style={style.plusbtn}>
                     <MaterialIcons name={'done'} size={17} color={'white'} />
@@ -816,7 +634,7 @@ function HomeSubDetail({navigation, route}, props) {
                       fontSize: 14,
                       color: 'black',
                     }}>
-                    Add To Cart
+                    {Constraints.ADD_TO_CART}
                   </Text>
 
                   <AntDesign
@@ -835,40 +653,16 @@ function HomeSubDetail({navigation, route}, props) {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: '#FFFFFF',
-      }}>
+    <SafeAreaView style={style.container}>
       {loader ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator style={{}} size="large" color="#0000ff" />
-          <Text
-            style={{
-              fontFamily: 'RobotoSlab-Bold',
-              fontSize: 16,
-              color: '#0000ff',
-              marginTop: 10,
-            }}>
-            Loading
-          </Text>
+          <Text style={style.loadTxt}>Loading</Text>
         </View>
       ) : (
         <>
-          <View
-            style={{
-              paddingVertical: 15,
-              borderBottomRightRadius: 70,
-              backgroundColor: '#F0F8FF',
-            }}>
-            <View
-              style={{
-                paddingHorizontal: '2%',
-                width: Dimensions.get('window').width,
-                alignItems: 'center',
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-              }}>
+          <View style={style.headerContainer}>
+            <View style={style.subContain}>
               <Pressable
                 style={{}}
                 onPress={() => {
@@ -886,24 +680,8 @@ function HomeSubDetail({navigation, route}, props) {
                 size={30}
                 color={'#F0F8FF'}
               />
-              <Text
-                style={{
-                  width: '42%',
-                  color: 'black',
-                  fontWeight: '500',
-                  fontSize: 22,
-                  fontFamily: 'RobotoSlab-Bold',
-                }}>
-                Home Services
-              </Text>
-
-              <View
-                style={{
-                  width: '20%',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                }}>
+              <Text style={style.titleTxt}>{Constraints.HOME_SERVICES}</Text>
+              <View style={style.iconContain}>
                 <Pressable
                   onPress={() => {
                     Linking.openURL(`tel:${'03164558585'}`);
@@ -925,13 +703,14 @@ function HomeSubDetail({navigation, route}, props) {
                 dispatch(emptyCart());
               }}>
               <View pointerEvents="none">
-                <Text style={style.searchTxt}>Search...</Text>
+                <Text style={style.searchTxt}>{Constraints.SEARCH}</Text>
               </View>
               <FontAwesome name={'filter'} size={22} color={'black'} />
             </Pressable>
           </View>
           <View style={{paddingHorizontal: '5%', flex: 1}}>
             <FlatList
+              contentContainerStyle={{paddingBottom: '33%'}}
               data={list}
               horizontal={false}
               showsVerticalScrollIndicator={false}
@@ -939,7 +718,9 @@ function HomeSubDetail({navigation, route}, props) {
               renderItem={renderHomeServiceDetail}
               ListHeaderComponent={({item, index}) => {
                 return (
-                  <Text style={style.listHeaderTxt}>Choose from Listing</Text>
+                  <Text style={style.listHeaderTxt}>
+                    {Constraints.CHOOSE_FROM_LISTING}
+                  </Text>
                 );
               }}
               keyExtractor={item => item.key}
@@ -958,48 +739,14 @@ function HomeSubDetail({navigation, route}, props) {
             onPress={() => {
               navigation.navigate('Schedule');
             }}>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 30,
-                height: 30,
-                borderWidth: 1.3,
-                borderColor: 'white',
-                borderRadius: 30 / 2,
-              }}>
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: 19,
-                  fontWeight: '600',
-                  fontFamily: 'RobotoSlab-Bold',
-                }}>
-                {cartItems.length}
-              </Text>
+            <View style={style.cartItemsConatin}>
+              <Text style={style.cartLength}>{cartItems.length}</Text>
             </View>
-
-            <Text
-              style={{
-                color: 'white',
-                fontFamily: 'RobotoSlab-Bold',
-                fontSize: 19,
-                fontWeight: '600',
-              }}>
-              Rs.{total}
-            </Text>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              {/* <Text style={{color: 'white', fontSize: 19, fontWeight: '500'}}>
-              Continue
-            </Text> */}
-              <Ionicons
+            <Text style={style.cartTxtTotal}>Rs.{total}</Text>
+            <View style={style.cartBtnArrow}>
+              <Fontisto
                 style={{marginLeft: 5}}
-                name={'arrow-forward-outline'}
+                name={'arrow-right-l'}
                 size={30}
                 color={'white'}
               />
@@ -1012,7 +759,6 @@ function HomeSubDetail({navigation, route}, props) {
         searchModal={searchModal}
         hideModal={closeModal}
       />
-      {/* <BottomTabs navigation={navigation} /> */}
     </SafeAreaView>
   );
 }

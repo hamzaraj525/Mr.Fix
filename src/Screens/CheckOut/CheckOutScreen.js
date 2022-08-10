@@ -1,39 +1,49 @@
 import React, {useState, useEffect} from 'react';
 import {
-  ScrollView,
-  Pressable,
-  StatusBar,
-  SafeAreaView,
-  TextInput,
   Text,
   View,
+  Pressable,
+  StatusBar,
+  TextInput,
+  ScrollView,
+  SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
-import NetworkModal from '../../Components/Modal/NetworkModal';
-import NetInfo from '@react-native-community/netinfo';
 import style from './style';
 import FastImage from 'react-native-fast-image';
+import {useDispatch, useSelector} from 'react-redux';
+import NetInfo from '@react-native-community/netinfo';
 import database from '@react-native-firebase/database';
 import firestore from '@react-native-firebase/firestore';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import OrderDone from './../../Components/Modal/OrderDone';
-import {useDispatch, useSelector} from 'react-redux';
+import NetworkModal from '../../Components/Modal/NetworkModal';
 import {removeFromCart, emptyCart} from '../../../src/Redux/Action/actions';
 
 function CheckOutScreen({navigation, props, route}) {
-  const [networkModal, setNetworkModal] = useState(false);
-  const [timeTitle, setTimeTitle] = useState('');
-  const [showOrderModal, setShowOrderModal] = useState(false);
-  const [input, setInput] = React.useState('');
+  const dispatch = useDispatch();
   const [list, setList] = useState([]);
-  const [colorId, setColorId] = useState(0);
+  const [loader, setLoader] = useState(false);
   const [add, setAdd] = useState(false);
+  const [colorId, setColorId] = useState(0);
+  const [timeTitle, setTimeTitle] = useState('');
+  const [input, setInput] = React.useState('');
+  const [networkModal, setNetworkModal] = useState(false);
+  const [showOrderModal, setShowOrderModal] = useState(false);
   const [postTime, setPostTime] = useState(
     firestore.Timestamp.fromDate(new Date()),
   );
-  const dispatch = useDispatch();
-  const {cartItems, userId, userName, userMail, userContact} = useSelector(
-    reducers => reducers.cartReducer,
-  );
+  const {
+    lat,
+    long,
+    userId,
+    userName,
+    userMail,
+    cartItems,
+    userContact,
+    userlocation,
+  } = useSelector(reducers => reducers.cartReducer);
+
   const items = cartItems;
   const total = items
     .map(item => Number(item.Price))
@@ -53,6 +63,7 @@ function CheckOutScreen({navigation, props, route}) {
     setNetworkModal(false);
   };
   const addToRealTimeDatabase = () => {
+    setLoader(true);
     const newReference = database().ref('/cartItems').push();
     const idd = Math.floor(Math.random() * 1999 + 20000);
     newReference
@@ -74,8 +85,13 @@ function CheckOutScreen({navigation, props, route}) {
         userName: userName,
         userMail: userMail,
         userContact: userContact,
+        userLocation: userlocation,
+        latitude: lat,
+        longitude: long,
+        Status: 'Pending',
       })
       .then(() => {
+        setLoader(false);
         setShowOrderModal(true);
       })
       .catch(error => {
@@ -278,33 +294,6 @@ function CheckOutScreen({navigation, props, route}) {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: '5%'}}>
-        {/* <ScrollView
-          contentContainerStyle={{paddingHorizontal: '3%'}}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          horizontal={true}>
-          {time.map((item, index) => {
-            return (
-              <View key={item.key} style={{margin: 5, marginTop: '1%'}}>
-                <Pressable
-                  style={colorId === item.key ? style.red : style.white}
-                  onPress={() => {
-                    onPress(item.key, item.title);
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: 'RobotoSlab-Bold',
-                      color: 'black',
-                      fontSize: 17,
-                      fontWeight: '500',
-                    }}>
-                    {item.title}
-                  </Text>
-                </Pressable>
-              </View>
-            );
-          })}
-        </ScrollView> */}
         <Text
           style={{
             marginTop: '7%',
@@ -351,7 +340,7 @@ function CheckOutScreen({navigation, props, route}) {
               marginTop: '3%',
               fontFamily: 'RobotoSlab-Medium',
             }}>
-            Lahore Pubjab street No 3
+            {userlocation}
           </Text>
         </View>
         <Text
@@ -423,6 +412,7 @@ function CheckOutScreen({navigation, props, route}) {
 
         <View style={style.checkoutbtn}>
           <Pressable
+            disabled={loader ? true : false}
             style={[
               style.loginBtn,
               {
@@ -438,7 +428,11 @@ function CheckOutScreen({navigation, props, route}) {
                 checkConnection();
               }
             }}>
-            <Text style={style.proceedtxt}>Order</Text>
+            {loader ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Text style={style.proceedtxt}>Order</Text>
+            )}
           </Pressable>
         </View>
       </View>

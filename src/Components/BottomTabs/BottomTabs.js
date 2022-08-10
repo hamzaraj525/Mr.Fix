@@ -1,10 +1,10 @@
-import React, {Component, PureComponent} from 'react';
+import React from 'react';
 import {
   View,
-  Pressable,
-  SafeAreaView,
   Platform,
   StyleSheet,
+  Pressable,
+  SafeAreaView,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -22,20 +22,12 @@ function BottomTabs({navigation, props}) {
             changeColor(1);
             navigation.navigate('Home');
           }}
-          style={{
-            padding: 8,
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-          }}>
+          style={styles.bottomBarItem}>
           <MaterialCommunityIcons
             name="home"
             color={colorId === 1 ? 'orange' : 'white'}
             size={33}
           />
-          {/* <Text style={{alignSelf: 'center', color: 'white', fontSize: 12}}>
-            Home
-          </Text> */}
         </Pressable>
 
         <Pressable
@@ -43,40 +35,24 @@ function BottomTabs({navigation, props}) {
             changeColor(2);
             navigation.navigate('BookingScreen');
           }}
-          style={{
-            padding: 8,
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-          }}>
+          style={styles.bottomBarItem}>
           <MaterialCommunityIcons
             name="book"
             color={colorId === 2 ? 'orange' : 'white'}
             size={33}
           />
-          {/* <Text style={{alignSelf: 'center', color: 'white', fontSize: 12}}>
-            Bookings
-          </Text> */}
         </Pressable>
         <Pressable
           onPress={() => {
             changeColor(3);
             navigation.navigate('Profile');
           }}
-          style={{
-            padding: 8,
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-          }}>
+          style={styles.bottomBarItem}>
           <MaterialCommunityIcons
             name="account"
             color={colorId === 3 ? 'orange' : 'white'}
             size={33}
           />
-          {/* <Text style={{alignSelf: 'center', color: 'white', fontSize: 12}}>
-            Profile
-          </Text> */}
         </Pressable>
       </View>
     </SafeAreaView>
@@ -99,5 +75,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     backgroundColor: 'black',
     borderRadius: 40,
+  },
+  bottomBarItem: {
+    padding: 8,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
 });

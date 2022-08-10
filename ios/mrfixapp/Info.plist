@@ -47,10 +47,9 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Mr.Fix want to know your location  </string>
+	<string>Mr.Fix want to know your location</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>M.Fix want to access your Storage</string>
-
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

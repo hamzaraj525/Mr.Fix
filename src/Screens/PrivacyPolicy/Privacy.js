@@ -1,99 +1,34 @@
-import React, {PureComponent} from 'react';
-import {Text, View, ScrollView, Pressable, SafeAreaView} from 'react-native';
+import React from 'react';
 import style from './style';
-import FastImage from 'react-native-fast-image';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AboutDataa from './../../DataStore/AboutData';
+import {Text, View, ScrollView, Pressable, SafeAreaView} from 'react-native';
+import Constraints from './../../Constraints/Constraints';
 
 function Privacy({navigation, props, route}) {
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-      }}>
-      <View
-        style={{
-          marginTop: '4%',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingHorizontal: '5%',
-        }}>
+    <SafeAreaView style={style.container}>
+      <View style={style.header}>
         <Pressable
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          style={style.backBtn}
           onPress={() => {
             navigation.goBack();
           }}>
-          <Ionicons
-            style={{}}
-            name={'arrow-back-outline'}
-            size={30}
-            color={'black'}
-          />
+          <Ionicons name={'arrow-back-outline'} size={30} color={'black'} />
         </Pressable>
-        <Text
-          style={{
-            fontFamily: 'RobotoSlab-Bold',
-            color: 'black',
-            fontWeight: '500',
-            fontSize: 21,
-          }}>
-          Privacy Policy
-        </Text>
-        <Pressable
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          onPress={() => {}}>
-          <Ionicons style={{}} name={'share'} size={30} color={'white'} />
+        <Text style={style.title}>{Constraints.PRIVACY_POLICY}</Text>
+        <Pressable style={style.backBtn}>
+          <Ionicons name={'share'} size={30} color={'white'} />
         </Pressable>
       </View>
-      <View
-        style={{
-          alignSelf: 'center',
-          width: '33%',
-          height: 0.9,
-          marginTop: -1,
-          backgroundColor: 'black',
-        }}
-      />
+      <View style={style.bottomLine} />
       <ScrollView
         contentContainerStyle={{paddingBottom: '6%'}}
         style={{paddingHorizontal: '5%'}}>
-        <Text
-          style={{
-            fontFamily: 'RobotoSlab-Bold',
-            marginTop: '5%',
-            color: 'black',
-            fontWeight: '600',
-            fontSize: 21,
-          }}>
-          M.Fix Privacy Policy
+        <Text style={style.txtPrivacy}>
+          {Constraints.MR_FIX_PRIVACY_POLICY}
         </Text>
-        <Text
-          style={{
-            fontFamily: 'RobotoSlab-Bold',
-            color: 'black',
-            fontWeight: '400',
-            marginTop: '2%',
-            fontSize: 13,
-          }}>
-          Customer & Vendor Relations
-        </Text>
-        <Text
-          style={{
-            color: 'black',
-            fontFamily: 'RobotoSlab-Bold',
-            fontWeight: '400',
-            marginTop: '3%',
-            fontSize: 14,
-            lineHeight: 18,
-          }}>
+        <Text style={style.customer}>{Constraints.CUSTOMER_VENDOR}</Text>
+        <Text style={style.detail}>
           M.Hamza built the Mr.Fix app as a Free app. This SERVICE is provided
           by M.Hamza at no cost and is intended for use as is. This page is used
           to inform visitors regarding my policies with the collection, use, and

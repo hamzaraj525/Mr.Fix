@@ -20,19 +20,12 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   productContainer: {
-    // shadowColor: 'black  ',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 8,
-    // },
-    // shadowOpacity: 0.4,
-    // shadowRadius: 6,
     alignItems: 'center',
     justifyContent: 'space-evenly',
     backgroundColor: '#ecf5fb',
     marginTop: '5%',
     width: '75%',
-    height: 155,
+    height: 150,
     borderRadius: 22,
   },
   img: {
@@ -57,5 +50,33 @@ export default StyleSheet.create({
     color: 'grey',
     fontWeight: '600',
     fontSize: 18,
+  },
+  titleTxt: {
+    fontWeight: '600',
+    fontFamily: 'RobotoSlab-Bold',
+    color: '#004379',
+  },
+  container: {flex: 1, backgroundColor: 'white'},
+
+  header: {paddingHorizontal: '7%', marginBottom: '5%', marginTop: '10%'},
+
+  headerTxtOne: {
+    color: 'black',
+    lineHeight: 37,
+    fontFamily: 'RobotoSlab-Bold',
+    fontWeight: '500',
+    fontSize: 32,
+  },
+  headerTxtTwo: {
+    fontFamily: 'RobotoSlab-Bold',
+    color: 'red',
+    fontWeight: '700',
+    fontSize: 30,
+  },
+  headerTxtThree: {
+    fontSize: 30,
+    fontFamily: 'RobotoSlab-Bold',
+    fontWeight: '700',
+    color: 'magenta',
   },
 });

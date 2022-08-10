@@ -1,6 +1,7 @@
 import {Dimensions, StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
+  container: {flex: 1, backgroundColor: 'white'},
   subContainerCartItems: {
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -52,7 +53,33 @@ export default StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
   },
-
+  OrderProgressItems: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 4,
+    borderColor: '#FFCB00',
+    width: 42,
+    height: 42,
+    borderRadius: 42 / 2,
+  },
+  OrderProgress: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 12,
+    borderWidth: 0.3,
+    borderColor: 'grey',
+    borderRadius: 20,
+    marginTop: 10,
+    marginBottom: 5,
+    width: '90%',
+    alignSelf: 'center',
+  },
+  progressBar: {
+    backgroundColor: 'red',
+    height: 4,
+    alignSelf: 'center',
+    width: 22,
+  },
   subTitxt: {
     color: 'black',
     marginTop: 6,
@@ -71,5 +98,54 @@ export default StyleSheet.create({
     borderTopRightRadius: 50,
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
+  },
+  orderDetailTxt: {
+    fontFamily: 'RobotoSlab-Bold',
+    fontSize: 20,
+    color: 'black',
+    fontWeight: '600',
+    marginTop: '2%',
+    alignSelf: 'center',
+  },
+  subContainer: {
+    marginBottom: 5,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  statusContainer: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  itemLenthContainer: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  orderContainer: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    marginBottom: '6%',
+    marginTop: '3%',
+  },
+  subOrderContainer: {
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    flexDirection: 'row',
+  },
+  orderImgs: {borderRadius: 34 / 2, width: 34, height: 34},
+  priceTxtContainer: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  txtStepTitle: {color: 'grey', fontFamily: 'RobotoSlab-Bold', fontSize: 10},
+  txtSteps: {
+    color: 'black',
+    fontFamily: 'RobotoSlab-Bold',
+    fontSize: 14,
   },
 });

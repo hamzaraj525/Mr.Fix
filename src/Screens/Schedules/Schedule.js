@@ -1,35 +1,30 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   View,
-  ScrollView,
-  Pressable,
-  TouchableOpacity,
   FlatList,
+  Pressable,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import style from './style';
-import FastImage from 'react-native-fast-image';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import {useDispatch} from 'react-redux';
 import time from '../../DataStore/TimeData';
-import {connect, useDispatch, useSelector} from 'react-redux';
-import {
-  addItemToCart,
-  removeFromCart,
-  emptyCart,
-} from '../../../src/Redux/Action/actions';
-function Schedule({navigation, props, route}) {
-  const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-  const [colorId, setColorId] = useState(0);
-  const [timeTitle, setTimeTitle] = useState('9:00 AM');
+import FastImage from 'react-native-fast-image';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {emptyCart} from '../../../src/Redux/Action/actions';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import Constraints from '../../Constraints/Constraints';
 
+function Schedule({navigation, props, route}) {
   const dispatch = useDispatch();
-  const {cartItems} = useSelector(reducers => reducers.cartReducer);
+  const [show, setShow] = useState(false);
+  const [mode, setMode] = useState('date');
+  const [colorId, setColorId] = useState(0);
+  const [date, setDate] = useState(new Date());
+  const [timeTitle, setTimeTitle] = useState('9:00 AM');
 
   const onPress = (key, item) => {
     setColorId(key);
@@ -54,30 +49,15 @@ function Schedule({navigation, props, route}) {
   const header = ({item, index}) => {
     return (
       <>
-        <Text
-          style={{
-            alignSelf: 'center',
-            fontFamily: 'RobotoSlab-Bold',
-            color: 'black',
-            fontWeight: '500',
-            fontSize: 20,
-            marginTop: '5%',
-          }}>
-          Please select prefered visiting time
+        <Text style={style.scheduleSubTitle}>
+          {Constraints.SCHEDULE_subTitle}
         </Text>
         <TouchableOpacity
           activeOpacity={0.6}
           onPress={() => {
             showDatepicker();
           }}
-          style={{
-            marginTop: '6%',
-            alignSelf: 'center',
-            width: '54%',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+          style={style.datePickerBtn}>
           <Text style={{fontSize: 23, color: 'red'}}>
             {date.getDate() +
               ' / ' +
@@ -127,15 +107,7 @@ function Schedule({navigation, props, route}) {
                 style={style.img}
                 source={item.img}
               />
-              <Text
-                style={{
-                  fontWeight: '600',
-                  fontFamily: 'RobotoSlab-Bold',
-                  color: '#004379',
-                  fontSize: 17,
-                }}>
-                {item.title}
-              </Text>
+              <Text style={style.timeTitle}>{item.title}</Text>
             </View>
           </View>
         </Pressable>
@@ -144,62 +116,22 @@ function Schedule({navigation, props, route}) {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-      }}>
-      <View
-        style={{
-          marginTop: '4%',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingHorizontal: '5%',
-        }}>
+    <SafeAreaView style={style.container}>
+      <View style={style.header}>
         <Pressable
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          style={style.btnBack}
           onPress={() => {
             navigation.goBack();
             dispatch(emptyCart());
           }}>
-          <Ionicons
-            style={{}}
-            name={'arrow-back-outline'}
-            size={30}
-            color={'black'}
-          />
+          <Ionicons name={'arrow-back-outline'} size={30} color={'black'} />
         </Pressable>
-        <Text
-          style={{
-            fontFamily: 'RobotoSlab-Bold',
-            color: 'black',
-            fontWeight: '500',
-            fontSize: 21,
-          }}>
-          Schedule
-        </Text>
-        <Pressable
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          onPress={() => {}}>
-          <Ionicons style={{}} name={'share'} size={30} color={'white'} />
+        <Text style={style.titleSchedule}>{Constraints.SCHEDULE}</Text>
+        <Pressable style={style.shreBtn}>
+          <Ionicons name={'share'} size={30} color={'white'} />
         </Pressable>
       </View>
-      <View
-        style={{
-          alignSelf: 'center',
-          width: '22%',
-          height: 0.9,
-          marginTop: -1,
-          backgroundColor: 'black',
-        }}
-      />
+      <View style={style.bottomLine} />
 
       <FlatList
         data={time}
@@ -216,27 +148,14 @@ function Schedule({navigation, props, route}) {
       />
       <TouchableOpacity
         activeOpacity={0.6}
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+        style={style.btnCheckOut}
         onPress={() => {
           navigation.navigate('CheckOutScreen', {
             datee: date,
             timee: timeTitle,
           });
         }}>
-        <Text
-          style={{
-            alignSelf: 'center',
-            fontFamily: 'RobotoSlab-Bold',
-            color: 'red',
-            fontWeight: '500',
-            fontSize: 20,
-            marginTop: '5%',
-          }}>
-          CheckOut
-        </Text>
+        <Text style={style.btnCheckOutTxt}>{Constraints.CHECKOUT}</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

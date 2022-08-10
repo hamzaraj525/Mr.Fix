@@ -10,16 +10,15 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import style from './style';
-import auth from '@react-native-firebase/auth';
+import Images from '../../Constraints/Images';
 import FastImage from 'react-native-fast-image';
-import {useDispatch, useSelector} from 'react-redux';
 import storage from '@react-native-firebase/storage';
-import {logoutUser} from '../../Redux/Action/actions';
+import {useDispatch, useSelector} from 'react-redux';
+import Constraints from '../../Constraints/Constraints';
 import database from '@react-native-firebase/database';
 import ImagePicker from 'react-native-image-crop-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import BottomTabs from '../../Components/BottomTabs/BottomTabs';
 import NameEditModal from '../../Components/Modal/NameEditModal';
 import MailEditModal from '../../Components/Modal/MailEditModal';
 
@@ -30,13 +29,12 @@ function ProfileEditt({navigation, props, route}) {
   const [idEdit, setId] = React.useState('');
   const [mailEdit, setMailEdit] = React.useState();
   const [nameEdit, setNameEdit] = React.useState();
+  const [loader, setLoader] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
   const [showNameModal, setNameModal] = React.useState(false);
   const [showMailModal, setMailModal] = React.useState(false);
-  const {cartItems, userId, userName, userMail, userContact} = useSelector(
-    reducers => reducers.cartReducer,
-  );
+  const {userId, userName} = useSelector(reducers => reducers.cartReducer);
 
   const uploadImage = async () => {
     if (image == null) {
@@ -78,19 +76,6 @@ function ProfileEditt({navigation, props, route}) {
     }
   };
 
-  // const takePhotoFromCamera = () => {
-  //   ImagePicker.openCamera({
-  //     compressImageMaxWidth: 300,
-  //     compressImageMaxHeight: 300,
-  //     cropping: true,
-  //     compressImageQuality: 0.7,
-  //   }).then(image => {
-  //     console.log(image.data);
-  //     const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
-  //     setImage(imageUri);
-  //   });
-  // };
-
   const choosePhotoFromLibrary = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -119,12 +104,12 @@ function ProfileEditt({navigation, props, route}) {
   };
 
   useEffect(() => {
+    setLoader(true);
     database()
       .ref('/users')
       .on('value', snapshot => {
         var li = [];
         snapshot.forEach(child => {
-          // console.log(child.val());
           li.push({
             key: child.key,
             userIdd: child.val().userId,
@@ -133,6 +118,7 @@ function ProfileEditt({navigation, props, route}) {
             userPhone: child.val().userPhone,
           });
         });
+        setLoader(false);
         setList(li);
       });
   }, []);
@@ -141,15 +127,15 @@ function ProfileEditt({navigation, props, route}) {
     return listt.map(element => {
       if (element.userIdd === userId) {
         return (
-          <View style={{}}>
+          <View key={element.key} style={{}}>
             <Pressable
               onPress={() => {
                 setNameModal(true);
                 setNameEdit(element.key);
               }}
               style={style.subContainers}>
-              <View style={{}}>
-                <Text style={style.titleTxt}>Name</Text>
+              <View>
+                <Text style={style.titleTxt}>{Constraints.NAME}</Text>
                 <Text style={style.subTxt}>{element.userNamee}</Text>
               </View>
               <Fontisto
@@ -167,7 +153,7 @@ function ProfileEditt({navigation, props, route}) {
               }}
               style={style.subContainers}>
               <View style={{}}>
-                <Text style={style.titleTxt}>Email Adress</Text>
+                <Text style={style.titleTxt}>{Constraints.EMAIL_ADDRESS}</Text>
                 <Text style={style.subTxt}>{element.userMaill} </Text>
               </View>
               <Fontisto
@@ -179,8 +165,8 @@ function ProfileEditt({navigation, props, route}) {
             </Pressable>
 
             <View style={style.subContainers}>
-              <View style={{}}>
-                <Text style={style.titleTxt}>Contact</Text>
+              <View>
+                <Text style={style.titleTxt}>{Constraints.CONTACT}</Text>
                 <Text style={style.subTxt}>{element.userPhone} </Text>
               </View>
               <Fontisto
@@ -198,59 +184,31 @@ function ProfileEditt({navigation, props, route}) {
     });
   };
 
-  const showAlert = () => {
-    Alert.alert('Log out', 'are you sure?', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {
-        text: 'OK',
-        onPress: () => {
-          try {
-            auth()
-              .signOut()
-              .then(() => {
-                dispatch(logoutUser(userId));
-              })
-              .then(() => {
-                console.log('User signed out!');
-                navigation.replace('OtpStack');
-              })
-              .catch(error => {
-                alert('No user is signed in');
-              });
-          } catch (error) {
-            alert(error);
-          }
-        },
-      },
-    ]);
-  };
-
   return (
     <SafeAreaView style={style.container}>
       {uploading ? (
         <View style={style.loaderStyle}>
           <ActivityIndicator style={{}} size="large" color="#0000ff" />
-          <Text style={style.uploadTxt}>{transferred}% Uplaoding...</Text>
+          <Text style={style.uploadTxt}>
+            {transferred}% {Constraints.UPLOADING}
+          </Text>
         </View>
       ) : (
-        <ScrollView style={style.scrolViewStyle}>
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          style={style.scrolViewStyle}>
           <Pressable
-            style={{marginTop: '2%', marginLeft: '2%'}}
+            style={style.backArrow}
             onPress={() => {
               navigation.goBack();
             }}>
             <Ionicons name={'arrow-back-outline'} size={30} color={'black'} />
           </Pressable>
-          <Text style={style.ediTxt}>Edit</Text>
-          <Text style={style.prfileTxt}>Profile 😃</Text>
+          <Text style={style.ediTxt}>{Constraints.EDIT}</Text>
+          <Text style={style.prfileTxt}>{Constraints.PROFILE} 😃</Text>
           <View style={style.imgContainer}>
-            <Pressable
-              style={style.emtyContainer}
-              onPress={() => {}}></Pressable>
+            <Pressable style={style.emtyContainer}></Pressable>
             <Pressable
               style={style.imgSubContainer}
               onPress={() => {
@@ -268,17 +226,23 @@ function ProfileEditt({navigation, props, route}) {
                   resizeMode="cover"
                   priority={FastImage.priority.normal}
                   style={style.editImgStyle}
-                  source={require('../../../assets/Images/man.png')}
+                  source={Images.PlaceHolder_img}
                 />
               )}
             </Pressable>
-            <Pressable
-              style={style.usrnmeContainer}
-              onPress={() => {}}></Pressable>
+            <Pressable style={style.usrnmeContainer}></Pressable>
           </View>
 
           <Text style={style.userNmeStyle}>{userName}</Text>
-          {list()}
+          {loader ? (
+            <ActivityIndicator
+              style={{marginTop: 50}}
+              size="large"
+              color="#0000ff"
+            />
+          ) : (
+            list()
+          )}
         </ScrollView>
       )}
       <NameEditModal

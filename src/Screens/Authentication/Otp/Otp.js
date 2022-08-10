@@ -1,35 +1,41 @@
 import React, {useState, useEffect} from 'react';
 import {
   View,
-  ScrollView,
   Text,
+  Image,
   TextInput,
   Pressable,
   StatusBar,
-  Image,
+  ScrollView,
+  SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import style from './style';
 import auth from '@react-native-firebase/auth';
+import Images from '../../../Constraints/Images';
+import {useDispatch, useSelector} from 'react-redux';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useDispatch, useSelector} from 'react-redux';
-import database from '@react-native-firebase/database';
+import Constraints from '../../../Constraints/Constraints';
+
 const Otp = ({navigation}) => {
-  const [phonePlace, setPhonePlace] = React.useState(false);
-  const [confirm, setConfirm] = useState(null);
-  const [code, setCode] = useState('');
   const dispatch = useDispatch();
-  const {cartItems, userId} = useSelector(reducers => reducers.cartReducer);
+  const [code, setCode] = useState('');
+  const [loader, setLoader] = useState(false);
+  const [confirm, setConfirm] = useState(null);
+  const [phonePlace, setPhonePlace] = React.useState(false);
 
   const signInWithPhoneNumber = async () => {
     try {
       if (code !== '') {
+        setLoader(true);
         const confirmation = await auth().signInWithPhoneNumber(code);
         // setConfirm(confirmation);
         console.log(confirmation);
+        setLoader(false);
 
         if (confirmation._auth._authResult) {
-          navigation.navigate('SignUpOtpp', {
+          navigation.replace('Verify', {
             confirmation: confirmation,
             code: code,
           });
@@ -44,60 +50,39 @@ const Otp = ({navigation}) => {
       if (error.code === 'auth/network-request-failed') {
         alert('Network Error');
       } else {
-        alert(
-          'Due to too Many requests You have been blocked,Please try again later',
-        );
+        alert(error);
       }
     }
   };
 
   return (
     <View style={style.container}>
-      <StatusBar hidden={true} />
+      <StatusBar
+        barStyle={'dark-content'}
+        hidden={true}
+        backgroundColor="#0E0A30"
+      />
 
       <ScrollView bounces={false} contentContainerStyle={{flex: 1}}>
-        <View
-          style={{
-            flex: 1.4,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'gold',
-          }}>
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 95 / 2,
-              width: 95,
-              height: 95,
-              backgroundColor: '#EAC36D',
-              marginBottom: '3%',
-            }}>
-            <Image
-              style={{width: 50, tintColor: 'black', height: 50}}
-              source={require('./../../../../assets/Images/chat.png')}
-            />
+        <View style={style.subView}>
+          <View style={style.imgContainer}>
+            <Image style={style.icon} source={Images.logo} />
           </View>
 
-          <Text style={style.signUpTxt}>Mobile Number</Text>
+          <Text style={style.signUpTxt}>{Constraints.MOBILE_NUMBER}</Text>
           <Text
             style={[
               style.txtAlready,
               {marginRight: 0, marginTop: '3%', fontSize: 13},
             ]}>
-            We need to send OTP to authenticate your number
+            {Constraints.MOBILE_NUMBER_Detail}
           </Text>
         </View>
-        <View
-          style={{
-            flex: 2,
-            borderTopStartRadius: 70,
-            alignItems: 'center',
-            backgroundColor: 'white',
-          }}>
+        <View style={style.subViewTwo}>
           <View style={[style.passwordContainer, {marginTop: '10%'}]}>
             <Feather name="phone" size={20} color={'black'} />
             <TextInput
+              keyboardType="phone-pad"
               style={style.TiName}
               value={code}
               onChangeText={text => {
@@ -112,18 +97,24 @@ const Otp = ({navigation}) => {
           </View>
 
           <Pressable
+            disabled={loader ? true : false}
             onPress={() => {
               signInWithPhoneNumber();
             }}
             style={style.loginBtn}>
-            <Text style={style.sinupBtn}>Next</Text>
-
-            <Ionicons
-              style={{marginLeft: '3%'}}
-              name={'arrow-forward'}
-              size={25}
-              color={'white'}
-            />
+            {loader ? (
+              <ActivityIndicator style={{}} size="small" color="white" />
+            ) : (
+              <>
+                <Text style={style.sinupBtn}>{Constraints.NEXT_BTN}</Text>
+                <Ionicons
+                  style={{marginLeft: '3%'}}
+                  name={'arrow-forward'}
+                  size={25}
+                  color={'white'}
+                />
+              </>
+            )}
           </Pressable>
         </View>
       </ScrollView>

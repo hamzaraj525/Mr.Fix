@@ -4,86 +4,30 @@ import style from './style';
 import FastImage from 'react-native-fast-image';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AboutDataa from './../../DataStore/AboutData';
+import Constraints from '../../Constraints/Constraints';
 
 function About({navigation, props, route}) {
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-      }}>
-      <View
-        style={{
-          marginTop: '4%',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingHorizontal: '5%',
-        }}>
+    <SafeAreaView style={style.container}>
+      <View style={style.header}>
         <Pressable
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          style={style.backBtn}
           onPress={() => {
             navigation.goBack();
           }}>
-          <Ionicons
-            style={{}}
-            name={'arrow-back-outline'}
-            size={30}
-            color={'black'}
-          />
+          <Ionicons name={'arrow-back-outline'} size={30} color={'black'} />
         </Pressable>
-        <Text
-          style={{
-            fontFamily: 'RobotoSlab-Bold',
-            color: 'black',
-            fontWeight: '500',
-            fontSize: 21,
-          }}>
-          About Us
-        </Text>
-        <Pressable
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          onPress={() => {}}>
-          <Ionicons style={{}} name={'share'} size={30} color={'white'} />
+        <Text style={style.titleTxt}>{Constraints.ABOUT_US_TITLE}</Text>
+        <Pressable style={style.backBtn} onPress={() => {}}>
+          <Ionicons name={'share'} size={30} color={'white'} />
         </Pressable>
       </View>
-      <View
-        style={{
-          alignSelf: 'center',
-          width: '22%',
-          height: 0.9,
-          marginTop: -1,
-          backgroundColor: 'black',
-        }}
-      />
+      <View style={style.bottomLine} />
       <ScrollView
         contentContainerStyle={{paddingBottom: '6%'}}
         style={{paddingHorizontal: '5%'}}>
-        <Text
-          style={{
-            fontFamily: 'RobotoSlab-Bold',
-            marginTop: '5%',
-            color: 'black',
-            fontWeight: '700',
-            fontSize: 21,
-          }}>
-          Who We Are?
-        </Text>
-        <Text
-          style={{
-            color: 'black',
-            fontFamily: 'RobotoSlab-Bold',
-            fontWeight: '400',
-            marginTop: '3%',
-            fontSize: 14,
-            lineHeight: 18,
-          }}>
+        <Text style={style.whoTxt}>{Constraints.WHO_WE_ARE}</Text>
+        <Text style={style.whoDetailTxt}>
           Mr.Fix is an unrivaled online marketplace connecting home maintenance
           and handyman service providers and users in Lahore, Karachi,
           Islamabad, and Rawalpindi. We are recognized as the most trustworthy
@@ -92,25 +36,8 @@ function About({navigation, props, route}) {
           the years and are expanding to other cities of Pakistan.
         </Text>
 
-        <Text
-          style={{
-            fontFamily: 'RobotoSlab-Bold',
-            color: 'black',
-            fontWeight: '700',
-            marginTop: '3%',
-            fontSize: 21,
-          }}>
-          What We Do?
-        </Text>
-        <Text
-          style={{
-            color: 'black',
-            fontFamily: 'RobotoSlab-Bold',
-            fontWeight: '400',
-            marginTop: '3%',
-            fontSize: 14,
-            lineHeight: 18,
-          }}>
+        <Text style={style.whatWeTxt}>{Constraints.WHAT_WE_DO}</Text>
+        <Text style={style.whatWeTxtDetailTxt}>
           We aim to make home maintenance and handyman services more accessible,
           efficient, and easy-on-the-pocket for our customers. Along with this,
           we are also endeavoring to help thousands of local technicians in
@@ -123,25 +50,8 @@ function About({navigation, props, route}) {
           experience and 100% satisfaction.
         </Text>
 
-        <Text
-          style={{
-            fontFamily: 'RobotoSlab-Bold',
-            color: 'black',
-            fontWeight: '700',
-            marginTop: '2%',
-            fontSize: 21,
-          }}>
-          How We Do It – Technician ?
-        </Text>
-        <Text
-          style={{
-            color: 'black',
-            fontFamily: 'RobotoSlab-Bold',
-            fontWeight: '400',
-            marginTop: '3%',
-            fontSize: 14,
-            lineHeight: 18,
-          }}>
+        <Text style={style.howWeDo}>{Constraints.HOW_WE_DO}</Text>
+        <Text style={style.howWeDoDetailTxt}>
           Mr.Fix is connecting service providers (technicians) with users
           (customers) through our online platform. The customers and technicians
           can use our website and app (platforms), which are designed to make
@@ -158,42 +68,14 @@ function About({navigation, props, route}) {
           horizontal={true}>
           {AboutDataa.map((item, index) => {
             return (
-              <View
-                key={index}
-                style={{
-                  width: 270,
-                  height: 170,
-                  marginTop: '1%',
-                  marginRight: 20,
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'space-evenly',
-                  backgroundColor: '#ecf5fb',
-                }}>
-                <Text
-                  style={{
-                    fontFamily: 'RobotoSlab-Bold',
-                    color: 'black',
-                    fontWeight: '800',
-                    fontSize: 15,
-                  }}>
-                  {item.title}
-                </Text>
+              <View key={index} style={style.aboutData}>
+                <Text style={style.titleTxt}>{item.title}</Text>
                 <FastImage
                   resizeMode="cover"
-                  style={{width: 40, height: 40, tintColor: 'pink'}}
+                  style={style.ItemImg}
                   source={item.img}
                 />
-                <Text
-                  style={{
-                    fontFamily: 'RobotoSlab-Bold',
-                    paddingHorizontal: '7%',
-                    color: 'black',
-                    fontWeight: '300',
-                    fontSize: 10,
-                  }}>
-                  {item.subTitle}
-                </Text>
+                <Text style={style.subTitleTxt}>{item.subTitle}</Text>
               </View>
               // </View>
             );

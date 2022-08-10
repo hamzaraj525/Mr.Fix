@@ -6,7 +6,7 @@
 #import <Firebase.h>
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
- 
+#import <GoogleMaps/GoogleMaps.h>
 #import <React/RCTAppSetupUtils.h>
 
 #if RCT_NEW_ARCH_ENABLED
@@ -32,7 +32,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
- 
+  [GMSServices provideAPIKey:@"AIzaSyDAhaR1U_-EQJZu4Ckm0iUQ4gxSWqIMOvY"];
   RCTAppSetupPrepareApp(application);
 
     [FIRApp configure];

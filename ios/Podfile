@@ -6,7 +6,9 @@ install! 'cocoapods', :deterministic_uuids => false
  
 target 'mrfixapp' do
   config = use_native_modules!
-
+# React Native Maps dependencies
+rn_maps_path = '../node_modules/react-native-maps'
+pod 'react-native-google-maps', :path => rn_maps_path
  
   # Flags change depending on the env values.
   flags = get_default_flags()

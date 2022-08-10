@@ -17,8 +17,7 @@ import About from '../AboutUs/About';
 import TermsCondition from '../Terms/TermsCondition';
 import Privacy from '../PrivacyPolicy/Privacy';
 import {DrawerContent} from '../Drawer/DrawerContent.js';
-import SignUp from '../SignUp/SignUp';
-import Login from '../Login/Login';
+
 import NotificationScreen from '../Notification/NotificationScreen';
 import Otp from '../Authentication/Otp/Otp';
 import Verify from '../Authentication/Otp/Verify';
@@ -27,6 +26,7 @@ import SignUpOtpp from '../SignUpOtp/SignUpOtpp';
 import SplashScreen from '../Splash/SplashScreen';
 import OrderDetail from '../OrderDetails/OrderDetail';
 import PersonalSubDetail from '../PersonalSubDetails/PersonalSubDetail';
+
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const Stack = createNativeStackNavigator();
 const ScreenDrawer = createDrawerNavigator();
@@ -147,6 +147,7 @@ function Navigation({}) {
         name="Profile"
         component={ProfileScreen}
       />
+
       <Stack.Screen
         options={{header: () => null}}
         name="ProfileEditt"

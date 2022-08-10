@@ -1,6 +1,7 @@
 import {Dimensions, StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
+  container: {flex: 1, backgroundColor: '#FFFFFF'},
   button: {
     height: 65,
     width: 65,
@@ -240,12 +241,6 @@ export default StyleSheet.create({
     color: 'white',
   },
 
-  containerrr: {
-    alignSelf: 'center',
-    overflow: 'hidden', // for hide the not important parts from circle
-    width: 500,
-    height: 270,
-  },
   background: {
     // this shape is a circle
     borderRadius: 800, // border borderRadius same as width and height
@@ -273,12 +268,7 @@ export default StyleSheet.create({
     alignSelf: 'center',
     marginTop: '5%',
   },
-  containerr: {
-    width: '75%',
-    height: '50%',
-    backgroundColor: '#ffffff',
-    borderRadius: 33,
-  },
+
   cartBtnBlue: {
     flexDirection: 'row',
     width: '10%',
@@ -289,7 +279,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  container: {flexDirection: 'column'},
+
   plusBtn: {
     width: 25,
     height: 25,
@@ -359,7 +349,7 @@ export default StyleSheet.create({
     alignSelf: 'center',
     width: '65%',
     position: 'absolute',
-    bottom: 0,
+    bottom: 10,
     height: 55,
     justifyContent: 'space-evenly',
     alignItems: 'center',
@@ -378,5 +368,79 @@ export default StyleSheet.create({
     paddingHorizontal: '3%',
     fontWeight: '600',
     fontSize: 17,
+  },
+  headerContainer: {
+    paddingVertical: 15,
+    borderBottomRightRadius: 70,
+    backgroundColor: '#F0F8FF',
+  },
+  subContain: {
+    paddingHorizontal: '2%',
+    width: Dimensions.get('window').width,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  titleTxt: {
+    width: '42%',
+    color: 'black',
+    fontWeight: '500',
+    fontSize: 22,
+    fontFamily: 'RobotoSlab-Bold',
+  },
+  iconContain: {
+    width: '20%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  cartItemsConatin: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 30,
+    height: 30,
+    borderWidth: 1.3,
+    borderColor: 'white',
+    borderRadius: 30 / 2,
+  },
+  cartLength: {
+    color: 'white',
+    fontSize: 19,
+    fontWeight: '600',
+    fontFamily: 'RobotoSlab-Bold',
+  },
+  cartTxtTotal: {
+    color: 'white',
+    fontFamily: 'RobotoSlab-Bold',
+    fontSize: 19,
+    fontWeight: '600',
+  },
+  cartBtnArrow: {flexDirection: 'row', alignItems: 'center'},
+
+  loadTxt: {
+    fontFamily: 'RobotoSlab-Bold',
+    fontSize: 16,
+    color: '#0000ff',
+    marginTop: 10,
+  },
+  img: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 120,
+    height: 190,
+    backgroundColor: '#F0F8FF',
+    borderRadius: 10,
+  },
+  cartItemsSubContain: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  doneBtn: {
+    fontFamily: 'RobotoSlab-Bold',
+    marginLeft: '22%',
+    fontWeight: '400',
+    fontSize: 13,
+    color: 'black',
   },
 });

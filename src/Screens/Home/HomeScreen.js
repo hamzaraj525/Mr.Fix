@@ -1,51 +1,39 @@
-import React, {useState, useEffect} from 'react';
+import style from './style';
+import React, {useEffect, useState} from 'react';
+import LottieView from 'lottie-react-native';
+import Images from './../../Constraints/Images';
+import FastImage from 'react-native-fast-image';
+import * as Animatable from 'react-native-animatable';
+import servicesList from './../../DataStore/HomeDataa';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useDispatch, useSelector} from 'react-redux';
+import BottomTabs from '../../Components/BottomTabs/BottomTabs';
+import Constraints from './../../../src/Constraints/Constraints';
+import CominSoonModal from '../../Components/Modal/CominSoonModal';
+import Geolocation from '@react-native-community/geolocation';
+import Geocoder from 'react-native-geocoding';
+import {addUserLcation, logoutUser} from '../../Redux/Action/actions';
 import {
   Text,
   View,
+  Image,
   FlatList,
+  Pressable,
   StatusBar,
   Platform,
-  Image,
+  ActivityIndicator,
+  ImageBackground,
   PermissionsAndroid,
-  Pressable,
 } from 'react-native';
-import LottieView from 'lottie-react-native';
-import style from './style';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import BottomTabs from '../../Components/BottomTabs/BottomTabs';
-import * as Animatable from 'react-native-animatable';
-import servicesList from './../../DataStore/HomeDataa';
-import Geolocation from '@react-native-community/geolocation';
-import Geocoder from 'react-native-geocoding';
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import CominSoonModal from '../../Components/Modal/CominSoonModal';
-import {connect, useDispatch, useSelector} from 'react-redux';
-import {addUserid, logoutUser} from '../../Redux/Action/actions';
-import FastImage from 'react-native-fast-image';
 
 function HomeScreen({navigation, route}) {
-  // const [state, setCords] = useState({
-  //   pickupCords: {
-  //     latitude: 30.7046,
-  //     longitude: 76.7179,
-  //     latitudeDelta: 0.0922,
-  //     longitudeDelta: 0.0421,
-  //   },
-  //   dropLocation: {
-  //     latitude: 30.7333,
-  //     longitude: 76.7794,
-  //     latitudeDelta: 0.0922,
-  //     longitudeDelta: 0.0421,
-  //   },
-  // });
-
-  const [lat, setLat] = useState();
-  const [long, setLong] = useState();
-  const [url, setUrl] = useState('');
-  const [CSmodal, setMoal] = useState(false);
   const [locationText, setLocationText] = useState('');
   const dispatch = useDispatch();
-  const {cartItems, userId, userName, userMail} = useSelector(
+  const [long, setLong] = useState();
+  const [lat, setLat] = useState();
+  const [url, setUrl] = useState('');
+  const [CSmodal, setMoal] = useState(false);
+  const {userlocation, userName} = useSelector(
     reducers => reducers.cartReducer,
   );
 
@@ -55,10 +43,7 @@ function HomeScreen({navigation, route}) {
     } else {
       _getCurrentLocation();
     }
-  }, [lat, long]);
-  // useEffect(() => {
-  //   locationText !== '' ? dispatch(addUserid(locationText)) : null;
-  // }, []);
+  }, [long, lat]);
 
   const requestLocationPermission = async () => {
     try {
@@ -86,20 +71,26 @@ function HomeScreen({navigation, route}) {
       position => {
         setLat(position.coords.latitude);
         setLong(position.coords.longitude);
-        // console.log('location:' + lat, long);
+        console.log('location:' + lat, long);
       },
       error => {
         console.log(error);
       },
-      {enableHighAccuracy: true, timeout: 200000, maximumAge: 1000},
+      {
+        enableHighAccuracy: false,
+        timeout: 2000,
+        maximumAge: 3600000,
+      },
     );
 
     Geocoder.init(GOOGLE_MAPS_APIKEY, {language: 'en'});
     Geocoder.from(lat, long)
       .then(json => {
-        var addressComponent = json.results[0].formatted_address;
+        var addressComponent = json.results[3].formatted_address;
         console.log('address is  here', addressComponent);
+        console.log('address is  here', json);
         setLocationText(addressComponent);
+        dispatch(addUserLcation(addressComponent));
       })
       .catch(error => console.log(error));
   };
@@ -108,80 +99,42 @@ function HomeScreen({navigation, route}) {
     return (
       <>
         <View style={style.welcomeTxtBody}>
-          <View
-            style={{
-              marginLeft: '5%',
-              marginTop: Platform.OS === 'ios' ? '14%' : '3%',
-              marginRight: '5%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+          <View style={style.welcomeTxtBodyLeft}>
             <View style={style.txt}>
-              <Text
-                style={{
-                  fontSize: 31,
-                  fontFamily: 'RobotoSlab-Bold',
-                }}>
-                Welcome
-              </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
-                <Text
-                  style={{
-                    fontSize: 30,
-                    fontFamily: 'RobotoSlab-Bold',
-                  }}>
-                  to{' '}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 30,
-                    fontFamily: 'RobotoSlab-Bold',
-                  }}>
-                  Mr.Fix
-                </Text>
+              <Text style={style.txt}>{Constraints.WELCOME}</Text>
+              <View style={style.txtHeaderContainer}>
+                <Text style={style.txtTo}>{Constraints.TO} </Text>
+                <Text style={style.txtTitle}>{Constraints.MR_FIX}</Text>
               </View>
             </View>
-            <Pressable
+            {/* <Pressable
               onPress={() => {
                 navigation.navigate('Profile');
               }}>
-              <FastImage
-                resizeMode="cover"
-                style={style.profileImg}
-                source={require('../../../assets/Images/h.jpeg')}
-              />
-            </Pressable>
+              {img ? (
+                <FastImage
+                  resizeMode="cover"
+                  style={style.profileImg}
+                  source={Images.profileImgHome}
+                />
+              ) : (
+                <FastImage
+                  resizeMode="cover"
+                  style={style.profileImg}
+                  source={Images.profileImgHome}
+                />
+              )}
+            </Pressable> */}
           </View>
 
-          <View
-            style={{
-              alignSelf: 'center',
-              marginTop: '2%',
-              width: '89%',
-              borderRadius: 12,
-              height: 57,
-              backgroundColor: 'white',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
+          <View style={style.locContain}>
             <Ionicons
               style={{marginLeft: 10}}
               name="location-sharp"
               size={22}
               color={'black'}
             />
-            <View
-              style={{
-                flexDirection: 'column',
-                marginLeft: 8,
-                width: '80%',
-              }}>
+            <View style={style.locContainSub}>
               {/* <Text
                 style={{
                   fontWeight: '800',
@@ -190,20 +143,12 @@ function HomeScreen({navigation, route}) {
                 }}>
                 Lahore
               </Text> */}
-              {locationText !== '' ? (
-                <Text
-                  style={{
-                    fontFamily: 'RobotoSlab-Bold',
-                    color: 'grey',
-                    marginTop: 3,
-                    fontSize: 14,
-                  }}>
-                  {locationText}
-                </Text>
+              {userlocation ? (
+                <Text style={style.locTxt}>{userlocation}</Text>
               ) : (
                 <LottieView
                   style={{width: 45, height: 45}}
-                  source={require('./../../../assets/Animations/load.json')}
+                  source={Images.loaderHome}
                   autoPlay
                   loop={true}
                 />
@@ -212,44 +157,18 @@ function HomeScreen({navigation, route}) {
           </View>
         </View>
 
-        <View
-          style={{
-            marginLeft: 28,
-            marginTop: 20,
-          }}>
+        <View style={style.nameContain}>
           <View style={{alignItems: 'center', flexDirection: 'row'}}>
-            <Text
-              style={{
-                fontFamily: 'RobotoSlab-Bold',
-                color: 'grey',
-                fontSize: 21,
-                fontWeight: '700',
-              }}>
-              Hello {userName}
-            </Text>
+            <Text style={style.userNameTxt}>Hello {userName}</Text>
             <Animatable.View
               iterationCount={1}
               useNativeDriver
               animation={'bounceIn'}
               delay={500}>
-              <Image
-                style={{
-                  marginLeft: 7,
-                  width: 32,
-                  height: 32,
-                }}
-                source={require('../../../assets/Images/waving-hand.png')}
-              />
+              <Image style={style.waveImg} source={Images.WAVE_IMG} />
             </Animatable.View>
           </View>
-          <Text
-            style={{
-              fontFamily: 'RobotoSlab-Bold',
-              color: 'grey',
-              fontSize: 11,
-            }}>
-            Need a helping hand today ?
-          </Text>
+          <Text style={style.helpTxt}>{Constraints.HELPING_HAND}</Text>
         </View>
       </>
     );
@@ -267,50 +186,14 @@ function HomeScreen({navigation, route}) {
             setMoal(true);
           }
         }}
-        style={{
-          marginTop: 5,
-          alignSelf: 'center',
-        }}>
+        style={style.servicesContain}>
         <View style={[style.card, {backgroundColor: item.color}]}>
-          <View
-            style={{
-              flexDirection: 'column',
-              width: '53%',
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{
-                fontFamily: 'RobotoSlab-Bold',
-                fontSize: 26,
-                fontWeight: '600',
-                color: 'white',
-              }}>
-              {item.title}
-            </Text>
-            <Text
-              style={{
-                fontSize: 26,
-                fontWeight: '600',
-                marginTop: -4,
-                color: 'white',
-              }}>
-              {item.title2}
-            </Text>
-            <Text
-              style={{
-                marginTop: 2,
-                fontFamily: 'RobotoSlab-Bold',
-                fontSize: 11,
-                color: 'white',
-              }}>
-              {item.subtitle}
-            </Text>
+          <View style={style.cardImgContain}>
+            <Text style={style.cardImgContainTxt}>{item.title}</Text>
+            <Text style={style.cardSubTitleTxt}>{item.title2}</Text>
+            <Text style={style.cardSubTitleTwoTxt}>{item.subtitle}</Text>
           </View>
-          <Image
-            resizeMode="contain"
-            style={{width: '28%', height: 100}}
-            source={item.img}
-          />
+          <Image resizeMode="contain" style={style.cardImg} source={item.img} />
         </View>
       </Pressable>
     );
@@ -318,19 +201,6 @@ function HomeScreen({navigation, route}) {
   const closeModal = () => {
     setMoal(false);
   };
-  const date = new Date();
-  //date num
-  const d = date.getDate();
-  const reading = 7000;
-  const change = 1000;
-  const km = 50;
-
-  const datee = change * km;
-  // //month name
-  // const month = date.toLocaleString('default', {month: 'long'});
-  // //week
-  // const dayy = date.toLocaleString('en-us', {weekday: 'long'});
-  // console.log(dayy, month, d);
 
   return (
     <View style={{flex: 1}}>
