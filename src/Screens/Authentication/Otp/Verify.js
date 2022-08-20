@@ -12,7 +12,7 @@ import style from './style.js';
 import Images from '../../../Constraints/Images.js';
 import {useDispatch, useSelector} from 'react-redux';
 import database from '@react-native-firebase/database';
-import {addUserid} from '../../../Redux/Action/actions';
+import {addUserid, addUserKey} from '../../../Redux/Action/actions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Constraints from '../../../Constraints/Constraints.js';
@@ -63,6 +63,7 @@ function Verify({navigation, props, route}) {
                   results.user._user.phoneNumber,
                 ),
               );
+              dispatch(addUserKey(newReference.key));
             });
           navigation.replace('Home');
         } else {
@@ -100,12 +101,14 @@ function Verify({navigation, props, route}) {
     try {
       if (verifyCode !== '' && verifyCode.length === 6) {
         const results = await confirmation.confirm(verifyCode);
+
         uploadUserToDataBase(results);
       } else {
         alert('Please enter valid OTP code.');
       }
     } catch (error) {
       alert('Invalid code.' + error);
+      setLoader(false);
     }
   };
 

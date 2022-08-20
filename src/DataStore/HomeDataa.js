@@ -5,7 +5,7 @@ const servicesList = [
     title2: 'Care Services',
     subtitle: 'Eticacy and safety In a comfortable atmosphere of your home',
     color: '#fc9384',
-    img: require('../../assets/Images/hairdresser.png'),
+    img: require('../../assets/Images/makeover-2.png'),
     imgBack: require('./../../assets/Images/Parrotshape.png'),
   },
 
@@ -17,7 +17,7 @@ const servicesList = [
       'Home repair Plumbing and Electrical,carpentry,cleansing,Machenical Fixing  ',
 
     color: '#8bcee9',
-    img: require('../../assets/Images/house.png'),
+    img: require('../../assets/Images/house-2.png'),
     imgBack: require('./../../assets/Images/Yellowshape.png'),
   },
   {
@@ -26,7 +26,7 @@ const servicesList = [
     title2: 'Services',
     subtitle: 'All Groceries at your door step',
     color: '#fca729',
-    img: require('../../assets/Images/food.png'),
+    img: require('../../assets/Images/grocery.png'),
     imgBack: require('./../../assets/Images/RedShape.png'),
   },
 ];

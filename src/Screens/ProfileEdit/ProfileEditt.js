@@ -37,9 +37,10 @@ function ProfileEditt({navigation, props, route}) {
   const {userId, userName} = useSelector(reducers => reducers.cartReducer);
 
   const uploadImage = async () => {
-    if (image == null) {
-      return null;
-    }
+    // if (image == null) {
+    //   return null;
+    // }
+    console.log('----------imggggg' + image);
     const uploadUri = image;
     let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
 

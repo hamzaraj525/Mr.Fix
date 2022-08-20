@@ -1,5 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
-
+const {width, height} = Dimensions.get('window');
 export default StyleSheet.create({
   subContainerCartItems: {
     alignItems: 'center',
@@ -36,7 +36,7 @@ export default StyleSheet.create({
     height: 50,
     marginTop: '6%',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     alignSelf: 'center',
     flexDirection: 'row',
     backgroundColor: '#F0F8FF',

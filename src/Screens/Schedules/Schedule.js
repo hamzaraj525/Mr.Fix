@@ -1,15 +1,17 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
+  Alert,
   FlatList,
   Pressable,
+  BackHandler,
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
 import style from './style';
 import moment from 'moment';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import time from '../../DataStore/TimeData';
 import FastImage from 'react-native-fast-image';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -25,6 +27,29 @@ function Schedule({navigation, props, route}) {
   const [colorId, setColorId] = useState(0);
   const [date, setDate] = useState(new Date());
   const [timeTitle, setTimeTitle] = useState('9:00 AM');
+  const {cartItems} = useSelector(reducers => reducers.cartReducer);
+
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+  //       {
+  //         text: 'Cancel',
+  //         onPress: () => null,
+  //         style: 'cancel',
+  //       },
+  //       {text: 'YES', onPress: () => BackHandler.exitApp()},
+  //     ]);
+  //     return true;
+  //   };
+
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     backAction,
+  //     dispatch(emptyCart()),
+  //   );
+
+  //   return () => backHandler.remove();
+  // }, []);
 
   const onPress = (key, item) => {
     setColorId(key);

@@ -49,8 +49,10 @@ const Otp = ({navigation}) => {
     } catch (error) {
       if (error.code === 'auth/network-request-failed') {
         alert('Network Error');
+        setLoader(false);
       } else {
         alert(error);
+        setLoader(false);
       }
     }
   };

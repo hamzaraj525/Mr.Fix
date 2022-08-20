@@ -49,7 +49,7 @@ function OrderDetail({navigation, route}) {
       stepIndicatorLabelFinishedColor: '#ffffff',
       stepIndicatorLabelUnFinishedColor: '#aaaaaa',
       labelColor: '#999999',
-      labelSize: 13,
+      labelSize: 12,
       currentStepLabelColor: '#fe7013',
     };
 
@@ -89,6 +89,18 @@ function OrderDetail({navigation, route}) {
     };
     return (
       <>
+        <View
+          style={{
+            paddingHorizontal: '2%',
+            marginTop: 15,
+            marginBottom: 11,
+          }}>
+          <StepIndicator
+            customStyles={customStyles}
+            currentPosition={currentPosition}
+            labels={labels}
+          />
+        </View>
         <View style={style.cartItemsContainer}>
           <View style={style.subContainer}>
             <Text style={[style.subTitxt, {color: 'grey'}]}>
@@ -151,53 +163,6 @@ function OrderDetail({navigation, route}) {
           </View>
         </View>
 
-        {/* <View style={style.OrderProgress}>
-          {progress.map(element => {
-            return (
-              <>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    height: 63,
-                    width: 60,
-                  }}>
-                  <View
-                    style={[
-                      style.OrderProgressItems,
-                      {
-                        backgroundColor:
-                          items.Status === 'Pending' ? '#FFCB00' : 'white',
-                      },
-                    ]}>
-                    <Text style={style.txtSteps}>{element.step}</Text>
-                  </View>
-                  <Text style={style.txtStepTitle}>{element.title}</Text>
-                </View>
-                <View
-                  style={{
-                    alignSelf: 'center',
-                    height: 5,
-                    width: 9,
-                    backgroundColor: 'red',
-                  }}
-                />
-              </>
-            );
-          })}
-        </View> */}
-        <View
-          style={{
-            paddingHorizontal: '5%',
-            marginTop: 15,
-            marginBottom: 11,
-          }}>
-          <StepIndicator
-            customStyles={customStyles}
-            currentPosition={currentPosition}
-            labels={labels}
-          />
-        </View>
         <Pressable
           style={style.contiBtn}
           onPress={() => {

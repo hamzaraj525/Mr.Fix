@@ -1,3 +1,4 @@
+import Images from '../Constraints/Images';
 const profileList = [
   {
     name: 'Account',

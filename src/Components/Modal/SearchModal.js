@@ -74,6 +74,7 @@ function SearchModal({navigation, route, searchModal, hideModal}) {
         alert('Your Network Connection Is Not Good');
       });
   };
+
   const addtoCart = (item, index) => {
     hideModal();
     dispatch(addToCart(item, index));

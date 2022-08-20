@@ -36,6 +36,7 @@ function CheckOutScreen({navigation, props, route}) {
   const {
     lat,
     long,
+    userKey,
     userId,
     userName,
     userMail,
@@ -59,9 +60,11 @@ function CheckOutScreen({navigation, props, route}) {
 
   console.log(TotalPKR);
   console.log(cartItems, 'cart items');
+
   const hideModalNetwork = () => {
     setNetworkModal(false);
   };
+
   const addToRealTimeDatabase = () => {
     setLoader(true);
     const newReference = database().ref('/cartItems').push();
@@ -89,6 +92,8 @@ function CheckOutScreen({navigation, props, route}) {
         latitude: lat,
         longitude: long,
         Status: 'Pending',
+        userKey: userKey,
+        OrderDone: false,
       })
       .then(() => {
         setLoader(false);

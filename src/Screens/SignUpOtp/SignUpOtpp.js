@@ -44,6 +44,7 @@ function SignUpOtpp({navigation, props, route}) {
 
     newReference
       .then(() => {
+        dispatch(addUserid(userKey));
         setLoader(false);
         dispatch(updateUserName(Name));
         dispatch(updateUserMail(email));

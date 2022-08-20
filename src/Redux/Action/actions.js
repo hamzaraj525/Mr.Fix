@@ -71,3 +71,11 @@ export const addLontitude = long => {
     long: long,
   };
 };
+
+export const addUserKey = userKey => {
+  console.log('user Key----' + userKey);
+  return {
+    type: 'USER_KEY',
+    userKey: userKey,
+  };
+};
