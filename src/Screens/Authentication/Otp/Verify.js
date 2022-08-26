@@ -48,13 +48,14 @@ function Verify({navigation, props, route}) {
       .child('users')
       .once('value')
       .then(snapshot => {
+        console.log('-----------' + snapshot);
         if (snapshot.exists()) {
-          setLoader(false);
           newReference
             .set({
               key: newReference.key,
               userId: results.user._user.uid,
               userPhone: results.user._user.phoneNumber,
+              Ratings: [0],
             })
             .then(() => {
               dispatch(
@@ -64,7 +65,8 @@ function Verify({navigation, props, route}) {
                 ),
               );
               dispatch(addUserKey(newReference.key));
-            });
+            })
+            .catch(() => {});
           navigation.replace('Home');
         } else {
           newReference
@@ -72,6 +74,7 @@ function Verify({navigation, props, route}) {
               key: newReference.key,
               userId: results.user._user.uid,
               userPhone: results.user._user.phoneNumber,
+              Ratings: [0],
             })
             .then(() => {
               dispatch(
@@ -101,7 +104,6 @@ function Verify({navigation, props, route}) {
     try {
       if (verifyCode !== '' && verifyCode.length === 6) {
         const results = await confirmation.confirm(verifyCode);
-
         uploadUserToDataBase(results);
       } else {
         alert('Please enter valid OTP code.');
