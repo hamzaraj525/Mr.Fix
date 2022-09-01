@@ -51,12 +51,11 @@ function HomeSubDetail({navigation, route}, props) {
     style: 'currency',
     currency: 'USD',
   });
-  console.log(TotalPKR);
 
   const closeModal = () => {
     setSearchModal(false);
   };
-  console.log(cartItems, 'cart items');
+
   useEffect(() => {
     servicesData();
 
@@ -65,7 +64,6 @@ function HomeSubDetail({navigation, route}, props) {
       .on('value', snapshot => {
         var li = [];
         snapshot.forEach(child => {
-          console.log(child.val());
           li.push({
             key: child.key,
             Order: child.val().Order,
@@ -75,7 +73,7 @@ function HomeSubDetail({navigation, route}, props) {
             message: child.val().message,
           });
         });
-        console.log('done');
+
         setRealTime(li);
       });
   }, []);
@@ -87,18 +85,15 @@ function HomeSubDetail({navigation, route}, props) {
       .collection('Services')
       .get()
       .then(querySnapshot => {
-        console.log('Total services: ', querySnapshot.size);
         querySnapshot.forEach(documentSnapshot => {
           newArray.push(documentSnapshot.data());
         });
       })
       .then(testing => {
-        console.log('New Array Push is =', newArray);
         setList(newArray);
         setLoader(false);
       })
       .catch(error => {
-        console.log(error);
         alert('Your Network Connection Is Not Good');
       });
   };

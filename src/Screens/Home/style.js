@@ -4,9 +4,9 @@ export default StyleSheet.create({
   profileImg: {
     borderWidth: 3,
     borderColor: 'white',
-    width: 55,
-    height: 55,
-    borderRadius: 55 / 2,
+    width: 50,
+    height: 50,
+    borderRadius: 50 / 2,
   },
   welcomeTxtBody: {
     shadowColor: 'black',

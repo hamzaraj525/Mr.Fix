@@ -38,9 +38,11 @@ function HomeScreen({navigation, route}) {
   const [lat, setLat] = useState();
   const [url, setUrl] = useState('');
   const [CSmodal, setMoal] = useState(false);
-  const {userlocation, userName} = useSelector(
+  const {userlocation, userName, userPic} = useSelector(
     reducers => reducers.cartReducer,
   );
+  const placeHolerImg =
+    'https://firebasestorage.googleapis.com/v0/b/mrfix-55775.appspot.com/o/MrFixProfilePics%2Fman-2.png?alt=media&token=68735a41-7ffe-4082-bc00-2b88c8f9e22a';
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -62,13 +64,9 @@ function HomeScreen({navigation, route}) {
 
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         _getCurrentLocation();
-        console.log('Location permission granted');
       } else {
-        console.log('Location permission denied');
       }
-    } catch (err) {
-      console.warn(err);
-    }
+    } catch (err) {}
   };
 
   const _getCurrentLocation = () => {
@@ -76,11 +74,8 @@ function HomeScreen({navigation, route}) {
       position => {
         setLat(position.coords.latitude);
         setLong(position.coords.longitude);
-        console.log('location:' + lat, long);
       },
-      error => {
-        console.log(error);
-      },
+      error => {},
       {
         enableHighAccuracy: false,
         timeout: 2000,
@@ -92,14 +87,13 @@ function HomeScreen({navigation, route}) {
     Geocoder.from(lat, long)
       .then(json => {
         var addressComponent = json.results[3].formatted_address;
-        console.log('address is  here', addressComponent);
-        console.log('address is  here', json);
+
         setLocationText(addressComponent);
         dispatch(addUserLcation(addressComponent));
         dispatch(addLatitude(lat));
         dispatch(addLontitude(long));
       })
-      .catch(error => console.log(error));
+      .catch(error => {});
   };
 
   const servicesHeader = ({item, index}) => {
@@ -114,24 +108,19 @@ function HomeScreen({navigation, route}) {
                 <Text style={style.txtTitle}>{Constraints.MR_FIX}</Text>
               </View>
             </View>
-            {/* <Pressable
+            <Pressable
               onPress={() => {
                 navigation.navigate('Profile');
               }}>
-              {img ? (
-                <FastImage
-                  resizeMode="cover"
-                  style={style.profileImg}
-                  source={Images.profileImgHome}
-                />
-              ) : (
-                <FastImage
-                  resizeMode="cover"
-                  style={style.profileImg}
-                  source={Images.profileImgHome}
-                />
-              )}
-            </Pressable> */}
+              <FastImage
+                resizeMode={FastImage.resizeMode.cover}
+                priority={FastImage.priority.high}
+                style={style.profileImg}
+                source={{
+                  uri: userPic ? userPic : placeHolerImg,
+                }}
+              />
+            </Pressable>
           </View>
 
           <View style={style.locContain}>

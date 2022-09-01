@@ -1,4 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
+const {width} = Dimensions.get('window');
 export default StyleSheet.create({
   bottomView: {
     alignItems: 'center',
@@ -33,7 +34,7 @@ export default StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '90%',
+    width: width - 19,
     paddingHorizontal: '2%',
     paddingVertical: '4%',
   },
@@ -111,7 +112,7 @@ export default StyleSheet.create({
     height: '18%',
     borderTopLeftRadius: 50,
     backgroundColor: 'white',
-    borderWidth: 0.7,
+    borderWidth: 0.5,
     borderColor: 'black',
     justifyContent: 'flex-end',
   },

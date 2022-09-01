@@ -27,6 +27,7 @@ function CheckOutScreen({navigation, props, route}) {
   const [add, setAdd] = useState(false);
   const [colorId, setColorId] = useState(0);
   const [timeTitle, setTimeTitle] = useState('');
+  const [orderType, setOrderType] = useState('');
   const [input, setInput] = React.useState('');
   const [networkModal, setNetworkModal] = useState(false);
   const [showOrderModal, setShowOrderModal] = useState(false);
@@ -43,9 +44,13 @@ function CheckOutScreen({navigation, props, route}) {
     cartItems,
     userContact,
     userlocation,
+    userPic,
   } = useSelector(reducers => reducers.cartReducer);
 
   const items = cartItems;
+
+  const filteredType = items.filter(i => i.Price === i.Price);
+
   const total = items
     .map(item => Number(item.Price))
     .reduce((prev, curr) => prev + curr, 0);
@@ -58,9 +63,6 @@ function CheckOutScreen({navigation, props, route}) {
     currency: 'USD',
   });
 
-  console.log(TotalPKR);
-  console.log(cartItems, 'cart items');
-
   const hideModalNetwork = () => {
     setNetworkModal(false);
   };
@@ -68,7 +70,9 @@ function CheckOutScreen({navigation, props, route}) {
   const addToRealTimeDatabase = () => {
     setLoader(true);
     const newReference = database().ref('/cartItems').push();
-    const idd = Math.floor(Math.random() * 1999 + 20000);
+
+    const date = new Date();
+    const todayDate = date.getDate();
     newReference
       .set({
         key: newReference.key,
@@ -94,6 +98,9 @@ function CheckOutScreen({navigation, props, route}) {
         Status: 'Pending',
         userKey: userKey,
         OrderDone: false,
+        userProfilePic: userPic,
+        TodayDate: todayDate,
+        OrderType: filteredType[0].type,
       })
       .then(() => {
         setLoader(false);
@@ -123,62 +130,62 @@ function CheckOutScreen({navigation, props, route}) {
       }
     });
   };
-  const renderHomeServices = ({item, index}) => {
-    return (
-      <View onPress={() => {}} style={style.cartItemsContainer}>
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'row',
-          }}>
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 95,
-              height: 95,
-              borderRadius: 10,
-            }}>
-            <FastImage
-              resizeMode={FastImage.resizeMode.cover}
-              style={style.cartItemImage}
-              source={{
-                uri: item.img,
-                priority: FastImage.priority.high,
-              }}
-            />
-          </View>
+  // const renderHomeServices = ({item, index}) => {
+  //   return (
+  //     <View onPress={() => {}} style={style.cartItemsContainer}>
+  //       <View
+  //         style={{
+  //           alignItems: 'center',
+  //           justifyContent: 'center',
+  //           flexDirection: 'row',
+  //         }}>
+  //         <View
+  //           style={{
+  //             alignItems: 'center',
+  //             justifyContent: 'center',
+  //             width: 95,
+  //             height: 95,
+  //             borderRadius: 10,
+  //           }}>
+  //           <FastImage
+  //             resizeMode={FastImage.resizeMode.cover}
+  //             style={style.cartItemImage}
+  //             source={{
+  //               uri: item.img,
+  //               priority: FastImage.priority.high,
+  //             }}
+  //           />
+  //         </View>
 
-          <View
-            style={{
-              marginLeft: '4%',
-              flexDirection: 'column',
-            }}>
-            <Text style={style.cartItemTitle}>{item.title}</Text>
-            <Text style={style.subTitxt}>{item.SubTitle}</Text>
-            <Text style={style.cartItemPrice}>PKR {item.Price}</Text>
-          </View>
-        </View>
+  //         <View
+  //           style={{
+  //             marginLeft: '4%',
+  //             flexDirection: 'column',
+  //           }}>
+  //           <Text style={style.cartItemTitle}>{item.title}</Text>
+  //           <Text style={style.subTitxt}>{item.SubTitle}</Text>
+  //           <Text style={style.cartItemPrice}>PKR {item.Price}</Text>
+  //         </View>
+  //       </View>
 
-        <Pressable
-          style={{marginRight: 'auto'}}
-          onPress={() => {
-            dispatch(removeFromCart(item));
-          }}>
-          <Text style={style.cartRemoveTxt}>Remove</Text>
-          <View
-            style={{
-              width: 54,
-              height: 0.9,
-              marginTop: -2,
-              backgroundColor: '#DA2328',
-            }}
-          />
-        </Pressable>
-      </View>
-    );
-  };
+  //       <Pressable
+  //         style={{marginRight: 'auto'}}
+  //         onPress={() => {
+  //           dispatch(removeFromCart(item));
+  //         }}>
+  //         <Text style={style.cartRemoveTxt}>Remove</Text>
+  //         <View
+  //           style={{
+  //             width: 54,
+  //             height: 0.9,
+  //             marginTop: -2,
+  //             backgroundColor: '#DA2328',
+  //           }}
+  //         />
+  //       </Pressable>
+  //     </View>
+  //   );
+  // };
 
   const renderList = () => {
     return cartItems.map((item, index) => {
@@ -221,9 +228,12 @@ function CheckOutScreen({navigation, props, route}) {
               <Text style={style.cartItemPrice}>PKR {item.Price}</Text>
             </View>
           </View>
-
           <Pressable
-            style={{marginRight: 'auto'}}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: -10,
+            }}
             onPress={() => {
               dispatch(removeFromCart(item));
             }}>

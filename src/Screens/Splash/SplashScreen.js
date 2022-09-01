@@ -54,7 +54,6 @@ function SplashScreen({navigation}) {
           setNetworkModal(true);
         }, 3000);
       }
-      console.log('Is connected?', state.isConnected);
     });
   };
 

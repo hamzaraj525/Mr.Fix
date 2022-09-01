@@ -32,7 +32,6 @@ function PersonalSubDetail({navigation, route}) {
   const [loader, setLoader] = useState(true);
   const [PersonModal, setPersonaModal] = useState(false);
   const {cartItems} = useSelector(reducers => reducers.cartReducer);
-  console.log(cartItems, 'cartItems');
 
   const items = cartItems;
   const total = items
@@ -48,7 +47,7 @@ function PersonalSubDetail({navigation, route}) {
     style: 'currency',
     currency: 'USD',
   });
-  console.log(TotalPKR);
+
   useEffect(() => {
     personalServicesData();
   }, []);
@@ -63,18 +62,15 @@ function PersonalSubDetail({navigation, route}) {
       .collection('PersonalServices')
       .get()
       .then(querySnapshot => {
-        console.log('Total services: ', querySnapshot.size);
         querySnapshot.forEach(documentSnapshot => {
           newArray.push(documentSnapshot.data());
         });
       })
       .then(testing => {
-        console.log('New Personal Push is =', newArray);
         setPList(newArray);
         setLoader(false);
       })
       .catch(error => {
-        console.log(error);
         alert('Your Network Connection Is Not Good');
       });
   };

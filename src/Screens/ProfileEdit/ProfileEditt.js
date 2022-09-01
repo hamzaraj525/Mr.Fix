@@ -21,6 +21,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import NameEditModal from '../../Components/Modal/NameEditModal';
 import MailEditModal from '../../Components/Modal/MailEditModal';
+import {userProfilePic} from './../../Redux/Action/actions';
 
 function ProfileEditt({navigation, props, route}) {
   const dispatch = useDispatch();
@@ -35,13 +36,25 @@ function ProfileEditt({navigation, props, route}) {
   const [showNameModal, setNameModal] = React.useState(false);
   const [showMailModal, setMailModal] = React.useState(false);
   const {userId, userName} = useSelector(reducers => reducers.cartReducer);
+  const filteredList = listt.filter(e => e.userIdd === userId);
+  const placeHolerImg =
+    'https://firebasestorage.googleapis.com/v0/b/mrfix-55775.appspot.com/o/MrFixProfilePics%2Fman-2.png?alt=media&token=68735a41-7ffe-4082-bc00-2b88c8f9e22a';
 
-  const uploadImage = async () => {
-    // if (image == null) {
-    //   return null;
-    // }
-    console.log('----------imggggg' + image);
-    const uploadUri = image;
+  const updateProfilePic = (url, e) => {
+    database()
+      .ref('users/' + e.key)
+      .update({
+        userProfilePic: url,
+      })
+      .then(() => {
+        dispatch(userProfilePic(url));
+      })
+      .catch(() => {
+        alert('Some error occured');
+      });
+  };
+
+  const uploadImage = async (uploadUri, e) => {
     let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
 
     // Add timestamp to File Name
@@ -50,13 +63,10 @@ function ProfileEditt({navigation, props, route}) {
     filename = name + Date.now() + '.' + extension;
     setUploading(true);
     setTransferred(0);
-    const storageRef = storage().ref(`photos/${filename}`);
+    const storageRef = storage().ref(`MrFixProfilePics/${filename}`);
     const task = storageRef.putFile(uploadUri);
     // Set transferred state
     task.on('state_changed', taskSnapshot => {
-      console.log(
-        `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
-      );
       setTransferred(
         Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
           100,
@@ -66,35 +76,28 @@ function ProfileEditt({navigation, props, route}) {
       await task;
       const url = await storageRef.getDownloadURL();
       setUploading(false);
-      console.log('url==' + url);
+
       setImage(url);
-      Alert.alert('Image uploaded!');
+      updateProfilePic(url, e);
+
       return url;
-      console.log('url here' + url);
     } catch (e) {
-      console.log(e);
       return null;
     }
   };
 
-  const choosePhotoFromLibrary = () => {
+  const choosePhotoFromLibrary = async e => {
     ImagePicker.openPicker({
       width: 300,
       height: 300,
       cropping: true,
       compressImageQuality: 0.7,
     })
-      .then(image => {
-        console.log('image is here-----' + image.sourceURL);
-        const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
-        setImage(imageUri);
+      .then(img => {
+        const imageUri = Platform.OS === 'ios' ? img.sourceURL : img.path;
+        uploadImage(imageUri, e);
       })
-      .finally(() => {
-        uploadImage();
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(error => {});
   };
 
   const hideNameModal = () => {
@@ -117,6 +120,7 @@ function ProfileEditt({navigation, props, route}) {
             userNamee: child.val().userName,
             userMaill: child.val().userMail,
             userPhone: child.val().userPhone,
+            userProfilePic: child.val().userProfilePic,
           });
         });
         setLoader(false);
@@ -210,31 +214,37 @@ function ProfileEditt({navigation, props, route}) {
           <Text style={style.prfileTxt}>{Constraints.PROFILE} 😃</Text>
           <View style={style.imgContainer}>
             <Pressable style={style.emtyContainer}></Pressable>
-            <Pressable
-              style={style.imgSubContainer}
-              onPress={() => {
-                choosePhotoFromLibrary();
-              }}>
-              {image ? (
-                <FastImage
-                  resizeMode={FastImage.resizeMode.cover}
-                  priority={FastImage.priority.high}
-                  style={style.editImgStyle}
-                  source={{uri: image}}
-                />
-              ) : (
-                <FastImage
-                  resizeMode="cover"
-                  priority={FastImage.priority.normal}
-                  style={style.editImgStyle}
-                  source={Images.PlaceHolder_img}
-                />
-              )}
-            </Pressable>
+            {filteredList.map(e => {
+              return (
+                <Pressable
+                  style={style.imgSubContainer}
+                  onPress={() => {
+                    choosePhotoFromLibrary(e);
+                  }}>
+                  <FastImage
+                    resizeMode={FastImage.resizeMode.cover}
+                    priority={FastImage.priority.high}
+                    style={style.editImgStyle}
+                    source={{
+                      uri: e.userProfilePic ? e.userProfilePic : placeHolerImg,
+                    }}
+                  />
+                </Pressable>
+              );
+            })}
+
             <Pressable style={style.usrnmeContainer}></Pressable>
           </View>
 
-          <Text style={style.userNmeStyle}>{userName}</Text>
+          {listt.map(element => {
+            if (element.userIdd === userId) {
+              return (
+                <Text style={style.userNmeStyle}>{element.userNamee}</Text>
+              );
+            } else {
+              return null;
+            }
+          })}
           {loader ? (
             <ActivityIndicator
               style={{marginTop: 50}}

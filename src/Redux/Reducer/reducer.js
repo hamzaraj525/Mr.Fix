@@ -8,6 +8,7 @@ const initialState = {
   lat: null,
   long: null,
   userKey: '',
+  userPic: '',
 };
 export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -69,6 +70,11 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         userKey: action.userKey,
+      };
+    case 'USER_PIC':
+      return {
+        ...state,
+        userPic: action.userPic,
       };
   }
   return state;

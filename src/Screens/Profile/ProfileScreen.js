@@ -22,9 +22,11 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 function ProfileScreen({navigation, props, route}) {
   const dispatch = useDispatch();
-  const {userId, userContact, userName} = useSelector(
+  const {userId, userContact, userName, userPic} = useSelector(
     reducers => reducers.cartReducer,
   );
+  const placeHolerImg =
+    'https://firebasestorage.googleapis.com/v0/b/mrfix-55775.appspot.com/o/MrFixProfilePics%2Fman-2.png?alt=media&token=68735a41-7ffe-4082-bc00-2b88c8f9e22a';
 
   const list = () => {
     return profileList.map((element, index) => {
@@ -69,7 +71,7 @@ function ProfileScreen({navigation, props, route}) {
     Alert.alert('Confirmation', 'Are you sure you want to sign out ?', [
       {
         text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
+        onPress: () => {},
         style: 'cancel',
       },
       {
@@ -82,7 +84,6 @@ function ProfileScreen({navigation, props, route}) {
                 dispatch(logoutUser(userId, userContact));
               })
               .then(() => {
-                console.log('User signed out!');
                 navigation.replace('OtpStack');
               })
               .catch(error => {
@@ -101,12 +102,8 @@ function ProfileScreen({navigation, props, route}) {
       url: files.appLogo,
     };
     try {
-      const shareRes = await Share.open(options).then(res => {
-        console.log(res);
-      });
-    } catch (err) {
-      console.log(err);
-    }
+      const shareRes = await Share.open(options).then(res => {});
+    } catch (err) {}
   };
 
   return (
@@ -140,10 +137,12 @@ function ProfileScreen({navigation, props, route}) {
               navigation.navigate('ProfileEditt');
             }}>
             <FastImage
-              resizeMode="cover"
-              priority={FastImage.priority.normal}
+              resizeMode={FastImage.resizeMode.cover}
+              priority={FastImage.priority.high}
               style={style.Profileimg}
-              source={Images.profileImgHome}
+              source={{
+                uri: userPic ? userPic : placeHolerImg,
+              }}
             />
           </Pressable>
           <Pressable

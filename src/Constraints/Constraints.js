@@ -25,7 +25,7 @@ export default Constraints = {
   NETWORK_CONNECTIVITY_ONE: 'Your requested action could not be completed',
   NETWORK_CONNECTIVITY: ' due to connectivity issues',
   NETWORK_ERROR: 'Network Error',
-  WE_FIX_IT_RIGHT: 'We are fix it right',
+  WE_FIX_IT_RIGHT: 'We fix it right',
   SCHEDULE_subTitle: 'Please select prefered visiting time',
   SCHEDULE: 'Schedule',
   CHECKOUT: 'CheckOut',

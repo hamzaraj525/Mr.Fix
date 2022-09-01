@@ -38,7 +38,6 @@ const MailEditModal = props => {
         })
         .then(() => {
           dispatch(updateUserMail(mail));
-          console.log('mail updated.');
         });
       animateModal();
     } else {

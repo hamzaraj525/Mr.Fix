@@ -41,14 +41,12 @@ const NameEditModal = props => {
         })
         .then(() => {
           dispatch(updateUserName(name));
-          console.log('name updated.');
         });
     } else {
       alert('Please Enter Name');
     }
   };
-  console.log(props.nameEdit);
-  console.log(props.idEdit);
+
   return (
     <Modal
       animationType="fade"

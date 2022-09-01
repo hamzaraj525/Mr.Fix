@@ -16,6 +16,7 @@ import Constraints from '../../Constraints/Constraints';
 import database from '@react-native-firebase/database';
 import {
   addUserid,
+  addUserKey,
   updateUserName,
   updateUserMail,
 } from './../../Redux/Action/actions';
@@ -44,7 +45,7 @@ function SignUpOtpp({navigation, props, route}) {
 
     newReference
       .then(() => {
-        dispatch(addUserid(userKey));
+        dispatch(addUserKey(userKey));
         setLoader(false);
         dispatch(updateUserName(Name));
         dispatch(updateUserMail(email));

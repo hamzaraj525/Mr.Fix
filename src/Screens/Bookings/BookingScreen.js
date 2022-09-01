@@ -28,7 +28,6 @@ function BookingScreen({navigation, route}) {
       .on('value', snapshot => {
         var li = [];
         snapshot.forEach(child => {
-          // console.log(child.val());
           li.push({
             TotalPrice: child.val().TotalPrice,
             reservation: child.val().reservation,
@@ -57,7 +56,6 @@ function BookingScreen({navigation, route}) {
         <View key={item.key}>
           {item.userIdd === userId && item.Status === 'Completed' ? (
             <>
-              {console.log('elemts Order----' + JSON.stringify(item.Order))}
               {item.Order.map(element => {
                 return (
                   <View key={element.key} style={style.cartItemsContainer}>
@@ -136,7 +134,6 @@ function BookingScreen({navigation, route}) {
           {(item.userIdd === userId && item.Status === 'Confirmed') ||
           (item.Status !== 'Pending' && item.Status !== 'Completed') ? (
             <>
-              {console.log('elemts Order----' + JSON.stringify(item.Order))}
               {item.Order.map(element => {
                 return (
                   <View key={element.key} style={style.cartItemsContainer}>

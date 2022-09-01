@@ -31,7 +31,7 @@ const Otp = ({navigation}) => {
         setLoader(true);
         const confirmation = await auth().signInWithPhoneNumber(code);
         // setConfirm(confirmation);
-        console.log(confirmation);
+
         setLoader(false);
 
         if (confirmation._auth._authResult) {

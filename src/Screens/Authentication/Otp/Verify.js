@@ -48,54 +48,50 @@ function Verify({navigation, props, route}) {
       .child('users')
       .once('value')
       .then(snapshot => {
-        console.log('-----------' + snapshot);
-        if (snapshot.exists()) {
-          newReference
-            .set({
-              key: newReference.key,
-              userId: results.user._user.uid,
-              userPhone: results.user._user.phoneNumber,
-              Ratings: [0],
-            })
-            .then(() => {
-              dispatch(
-                addUserid(
-                  results.user._user.uid,
-                  results.user._user.phoneNumber,
-                ),
-              );
-              dispatch(addUserKey(newReference.key));
-            })
-            .catch(() => {});
-          navigation.replace('Home');
-        } else {
-          newReference
-            .set({
-              key: newReference.key,
-              userId: results.user._user.uid,
-              userPhone: results.user._user.phoneNumber,
-              Ratings: [0],
-            })
-            .then(() => {
-              dispatch(
-                addUserid(
-                  results.user._user.uid,
-                  results.user._user.phoneNumber,
-                ),
-              );
-            })
-            .then(() => {
-              setLoader(false);
-              navigation.replace('SignUpOtpp', {
-                results: results,
-                code: code,
-                userKey: newReference.key,
-              });
-            })
-            .catch(error => {
-              alert('Something went wrong' + error);
+        // if (snapshot.exists()) {
+        //   newReference
+        //     .set({
+        //       key: newReference.key,
+        //       userId: results.user._user.uid,
+        //       userPhone: results.user._user.phoneNumber,
+        //       Ratings: [0],
+        //     })
+        //     .then(() => {
+        //       dispatch(
+        //         addUserid(
+        //           results.user._user.uid,
+        //           results.user._user.phoneNumber,
+        //         ),
+        //       );
+        //       dispatch(addUserKey(newReference.key));
+        //     })
+        //     .catch(() => {});
+        //   navigation.replace('Home');
+        // } else {
+        newReference
+          .set({
+            key: newReference.key,
+            userId: results.user._user.uid,
+            userPhone: results.user._user.phoneNumber,
+            Ratings: [0],
+          })
+          .then(() => {
+            dispatch(
+              addUserid(results.user._user.uid, results.user._user.phoneNumber),
+            );
+          })
+          .then(() => {
+            setLoader(false);
+            navigation.replace('SignUpOtpp', {
+              results: results,
+              code: code,
+              userKey: newReference.key,
             });
-        }
+          })
+          .catch(error => {
+            alert('Something went wrong' + error);
+          });
+        // }
       });
   };
 
@@ -145,9 +141,7 @@ function Verify({navigation, props, route}) {
               setVerify(code);
             }}
             codeInputFieldStyle={style.underlineStyleBase}
-            onCodeFilled={code => {
-              console.log(`Code is ${code}, you are good to go!`);
-            }}
+            onCodeFilled={code => {}}
           />
           <View style={style.alreadytxtContainer}>
             <Text style={style.txtAlready}>{Constraints.DID_RECEIVE_CODE}</Text>

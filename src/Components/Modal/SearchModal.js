@@ -59,18 +59,15 @@ function SearchModal({navigation, route, searchModal, hideModal}) {
       .collection('Services')
       .get()
       .then(querySnapshot => {
-        console.log('Total HomeServices: ', querySnapshot.size);
         querySnapshot.forEach(documentSnapshot => {
           newArray.push(documentSnapshot.data());
         });
       })
       .then(testing => {
-        console.log('New Array Push is =', newArray);
         setHomeList(newArray);
         setMasterList(newArray);
       })
       .catch(error => {
-        console.log(error);
         alert('Your Network Connection Is Not Good');
       });
   };
