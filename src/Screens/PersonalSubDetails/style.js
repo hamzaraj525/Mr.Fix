@@ -409,7 +409,6 @@ export default StyleSheet.create({
     marginTop: 10,
   },
   iconContain: {
-    width: '20%',
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
@@ -420,7 +419,6 @@ export default StyleSheet.create({
     backgroundColor: '#F0F8FF',
   },
   subContain: {
-    paddingHorizontal: '2%',
     width: Dimensions.get('window').width,
     alignItems: 'center',
     flexDirection: 'row',

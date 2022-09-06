@@ -55,7 +55,7 @@ export default StyleSheet.create({
   txtHeaderContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
   },
   txtTo: {color: 'black', fontSize: 30, fontFamily: 'RobotoSlab-Bold'},
   txtTitle: {fontSize: 30, color: 'black', fontFamily: 'RobotoSlab-Bold'},
@@ -100,8 +100,8 @@ export default StyleSheet.create({
     color: 'white',
   },
   cardSubTitleTxt: {
-    fontSize: 24,
-    fontWeight: '600',
+    fontSize: 23,
+    fontWeight: '700',
     marginTop: -4,
     color: 'white',
   },

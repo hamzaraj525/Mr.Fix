@@ -204,6 +204,7 @@ function BookingScreen({navigation, route}) {
       );
     });
   };
+
   const pendingOrders = () => {
     return list.map(item => {
       if (item.userIdd === userId && item.Status === 'Pending') {

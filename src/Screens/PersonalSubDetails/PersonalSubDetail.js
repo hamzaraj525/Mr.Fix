@@ -585,11 +585,7 @@ function PersonalSubDetail({navigation, route}) {
                   color={'black'}
                 />
               </Pressable>
-              <Ionicons
-                name={'arrow-back-outline'}
-                size={30}
-                color={'#F0F8FF'}
-              />
+
               <Text style={style.titleTxt}>
                 {Constraints.PERSONAL_SERVICES}
               </Text>
@@ -600,12 +596,12 @@ function PersonalSubDetail({navigation, route}) {
                   }}>
                   <FontAwesome name={'phone'} size={30} color={'magenta'} />
                 </Pressable>
-                <Pressable
+                {/* <Pressable
                   onPress={() => {
                     navigation.navigate('NotificationScreen');
                   }}>
                   <FontAwesome name={'bell'} size={30} color={'#E9967A'} />
-                </Pressable>
+                </Pressable> */}
               </View>
             </View>
             <Pressable

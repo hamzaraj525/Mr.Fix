@@ -24,7 +24,7 @@ function Schedule({navigation, props, route}) {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState('date');
-  const [colorId, setColorId] = useState(0);
+  const [colorId, setColorId] = useState('');
   const [date, setDate] = useState(new Date());
   const [timeTitle, setTimeTitle] = useState('9:00 AM');
   const {cartItems} = useSelector(reducers => reducers.cartReducer);
@@ -51,9 +51,9 @@ function Schedule({navigation, props, route}) {
   //   return () => backHandler.remove();
   // }, []);
 
-  const onPress = (key, item) => {
-    setColorId(key);
-    setTimeTitle(item);
+  const onPress = item => {
+    setColorId(item.key);
+    setTimeTitle(item.title);
   };
 
   const onChange = (event, selectedDate) => {
@@ -123,7 +123,7 @@ function Schedule({navigation, props, route}) {
         <Pressable
           style={colorId === item.key ? style.red : style.white}
           onPress={() => {
-            onPress(item.key, item.title);
+            onPress(item);
           }}>
           <View style={style.subPraent}>
             <View style={style.productContainer}>

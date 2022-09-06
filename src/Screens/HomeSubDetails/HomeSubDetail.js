@@ -670,26 +670,21 @@ function HomeSubDetail({navigation, route}, props) {
                   color={'black'}
                 />
               </Pressable>
-              <Ionicons
-                name={'arrow-back-outline'}
-                size={30}
-                color={'#F0F8FF'}
-              />
+
               <Text style={style.titleTxt}>{Constraints.HOME_SERVICES}</Text>
-              <View style={style.iconContain}>
-                <Pressable
-                  onPress={() => {
-                    Linking.openURL(`tel:${'03164558585'}`);
-                  }}>
-                  <FontAwesome name={'phone'} size={30} color={'magenta'} />
-                </Pressable>
-                <Pressable
+
+              <Pressable
+                onPress={() => {
+                  Linking.openURL(`tel:${'03164558585'}`);
+                }}>
+                <FontAwesome name={'phone'} size={30} color={'magenta'} />
+              </Pressable>
+              {/* <Pressable
                   onPress={() => {
                     navigation.navigate('NotificationScreen');
                   }}>
                   <FontAwesome name={'bell'} size={30} color={'#E9967A'} />
-                </Pressable>
-              </View>
+                </Pressable> */}
             </View>
             <Pressable
               style={style.sectionStyle}

@@ -12,5 +12,5 @@ export default Images = {
   PADLOCK: require('./../../assets/Images/padlock.png'),
   PlaceHolder_img: require('./../../assets/Images/man.png'),
   ORDER_DONE: require('./../../assets/Animations/done.json'),
-  splashImg: require('./../../assets/Images/consult.png'),
+  splashImg: require('./../../assets/Images/online-shopping.png'),
 };
