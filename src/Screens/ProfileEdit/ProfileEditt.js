@@ -121,6 +121,7 @@ function ProfileEditt({navigation, props, route}) {
             userMaill: child.val().userMail,
             userPhone: child.val().userPhone,
             userProfilePic: child.val().userProfilePic,
+            Ratings: child.val().Ratings,
           });
         });
         setLoader(false);
@@ -239,7 +240,17 @@ function ProfileEditt({navigation, props, route}) {
           {listt.map(element => {
             if (element.userIdd === userId) {
               return (
-                <Text style={style.userNmeStyle}>{element.userNamee}</Text>
+                <>
+                  {console.log(element.Ratings)}
+                  <Text style={style.userNmeStyle}>{element.userNamee}</Text>
+                  {/* {element.Ratings.map((i, index) => {
+                    return (
+                      <Text key={index} style={style.userNmeStyle}>
+                        {i}
+                      </Text>
+                    );
+                  })} */}
+                </>
               );
             } else {
               return null;

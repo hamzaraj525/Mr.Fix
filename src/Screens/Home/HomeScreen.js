@@ -32,7 +32,6 @@ import {
 } from 'react-native';
 
 function HomeScreen({navigation, route}) {
- 
   const [locationText, setLocationText] = useState('');
   const dispatch = useDispatch();
   const [long, setLong] = useState();
