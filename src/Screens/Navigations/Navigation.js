@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {LogBox, SafeAreaView, View, Image, StyleSheet} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import HomeScreen from '../Home/HomeScreen';
+import Chat from './../Chat/Chat';
 import CheckOutScreen from '../CheckOut/CheckOutScreen';
 import ProfileScreen from '../Profile/ProfileScreen';
 import ProfileEditt from '../ProfileEdit/ProfileEditt';
@@ -121,6 +122,11 @@ function Navigation({}) {
         options={{header: () => null}}
         name="Home"
         component={HomeScreen}
+      />
+      <Stack.Screen
+        options={{header: () => null}}
+        name="Chat"
+        component={Chat}
       />
       <Stack.Screen
         options={{header: () => null}}

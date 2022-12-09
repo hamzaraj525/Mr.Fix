@@ -45,11 +45,11 @@ function BottomTabs({navigation, props}) {
         <Pressable
           onPress={() => {
             changeColor(3);
-            navigation.navigate('Profile');
+            navigation.navigate('Chat');
           }}
           style={styles.bottomBarItem}>
           <MaterialCommunityIcons
-            name="account"
+            name="chat"
             color={colorId === 3 ? 'orange' : 'white'}
             size={33}
           />
