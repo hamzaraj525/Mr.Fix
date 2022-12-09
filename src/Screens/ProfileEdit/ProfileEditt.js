@@ -133,7 +133,20 @@ function ProfileEditt({navigation, props, route}) {
     return listt.map(element => {
       if (element.userIdd === userId) {
         return (
-          <View key={element.key} style={{}}>
+          <View key={element.key}>
+            {element.Ratings.map(item => {
+              const sum = element.Ratings.reduce(
+                (prev, curr) => prev + curr,
+                0,
+              );
+              const finalTotal = sum / element.Ratings.length;
+              return (
+                <Text style={{fontSize: 16, alignSelf: 'center'}}>
+                  ⭐ {finalTotal.toFixed(1)}
+                </Text>
+              );
+            })}
+
             <Pressable
               onPress={() => {
                 setNameModal(true);

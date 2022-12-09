@@ -9,8 +9,8 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {store, persistor} from './src/Redux/Store/store';
 
 LogBox.ignoreAllLogs(true);
-
 const RootStack = createNativeStackNavigator();
+
 function App({}) {
   return (
     <>
