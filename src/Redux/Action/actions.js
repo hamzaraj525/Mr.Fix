@@ -21,7 +21,7 @@ export const emptyCart = payload => {
   };
 };
 export const addUserid = (userId, userContact) => {
-  // console.log('user Id redux' + userId);
+  console.log('user Id redux' + userId + '/' + userContact);
   return {
     type: 'ADD_USER_ID',
     userId: userId,

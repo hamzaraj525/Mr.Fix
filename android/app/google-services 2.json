@@ -95,11 +95,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "396546444157-hgbp5nnprr3elag0997mj3pqas5q2qvn.apps.googleusercontent.com",
+          "client_id": "396546444157-a4qilmaf1gr6sbvsni4gq3kdfi9qha4p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.mrfixapp",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+            "certificate_hash": "2f090bdd2c4869c474fdf2bbc913d502420d0b87"
           }
         },
         {

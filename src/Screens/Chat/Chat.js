@@ -1,18 +1,19 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import {Text, View, ScrollView, Pressable, SafeAreaView} from 'react-native';
 import style from './style';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import database from '@react-native-firebase/database';
-import {GiftedChat} from 'react-native-gifted-chat';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Constraints from './../../Constraints/Constraints';
+import React, {useState, useCallback, useEffect} from 'react';
+import {Text, Pressable, View, SafeAreaView} from 'react-native';
+import {GiftedChat, InputToolbar, Bubble} from 'react-native-gifted-chat';
 
 function Chat({navigation, props}) {
-  const dispatch = useDispatch();
   const [messages, setMessages] = useState([]);
   const {userId, userName} = useSelector(reducers => reducers.cartReducer);
 
   useEffect(() => {
     const unsubscribe = database()
-      .ref('/Chats')
+      .ref('Chats/' + userId + '/messsages')
       .on('value', snapshot => {
         var li = [];
         snapshot.forEach(child => {
@@ -22,10 +23,26 @@ function Chat({navigation, props}) {
             user: child.val().user,
           });
         });
-        setMessages(li);
+        setMessages(li.reverse());
       });
+
     return () => unsubscribe();
   }, []);
+
+  // useEffect(() => {
+  //   setMessages([
+  //     {
+  //       _id: 1,
+  //       text: 'Hello developer',
+  //       createdAt: new Date(),
+  //       user: {
+  //         _id: 2,
+  //         name: 'React Native',
+  //         avatar: 'https://placeimg.com/140/140/any',
+  //       },
+  //     },
+  //   ]);
+  // }, []);
 
   const onSend = useCallback(msgArray => {
     const message = msgArray[0];
@@ -34,24 +51,31 @@ function Chat({navigation, props}) {
       createdAt: new Date(),
     };
     setMessages(prevMessages => GiftedChat.append(prevMessages, myMsg));
-    const newReference = database().ref('/Chats').push();
-    newReference.set(myMsg);
+    database()
+      .ref('Chats/' + userId + '/messsages')
+      .push(myMsg);
   }, []);
 
   return (
     <SafeAreaView style={style.container}>
-      <Text
-        style={{
-          fontFamily: 'RobotoSlab-Bold',
-          color: 'black',
-          fontWeight: '500',
-          alignSelf: 'center',
-          fontSize: 21,
-        }}>
-        Chat with Fixer
-      </Text>
-      {!messages ? (
+      <View style={style.header}>
+        <Pressable
+          style={style.backBtn}
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <Ionicons name={'arrow-back-outline'} size={30} color={'black'} />
+        </Pressable>
+        <Text style={style.userTxt}>{Constraints.CHAT}</Text>
+        <Pressable style={style.backBtn} onPress={() => {}}>
+          <Ionicons name={'share'} size={30} color={'#F5EFEE'} />
+        </Pressable>
+      </View>
+
+      {messages ? (
         <GiftedChat
+          showUserAvatar
+          isAnimated
           inverted={true}
           messages={messages}
           onSend={text => onSend(text)}
@@ -59,25 +83,49 @@ function Chat({navigation, props}) {
             _id: userId,
             name: userName,
           }}
+          renderBubble={props => {
+            return (
+              <Bubble
+                {...props}
+                textStyle={{
+                  right: {
+                    color: 'black',
+                  },
+                  left: {
+                    color: 'black',
+                  },
+                }}
+                wrapperStyle={{
+                  right: {backgroundColor: 'white'},
+                  left: {backgroundColor: '#fc9384'},
+                }}
+                timeTextStyle={{
+                  right: {color: 'black'},
+                  left: {color: 'black'},
+                }}
+              />
+            );
+          }}
+          renderInputToolbar={props => {
+            return (
+              <InputToolbar
+                {...props}
+                containerStyle={{
+                  borderRadius: 20,
+                  backgroundColor: 'white',
+                  left: 20,
+                  right: 20,
+                }}
+              />
+            );
+          }}
           placeholder="Type a message..."
+          placeholderTextColor="grey"
+          minInputToolbarHeight={48}
         />
       ) : (
-        <View
-          style={{
-            alignSelf: 'center',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text
-            style={{
-              fontFamily: 'RobotoSlab-Bold',
-              color: 'black',
-              fontWeight: '500',
-              fontSize: 21,
-            }}>
-            No new Messages
-          </Text>
+        <View style={style.subViewNoMsg}>
+          <Text style={style.noMsgTxt}>{Constraints.NO_NEW_MESSAGES}</Text>
         </View>
       )}
     </SafeAreaView>

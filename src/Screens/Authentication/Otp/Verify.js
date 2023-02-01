@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import style from './style.js';
+import auth from '@react-native-firebase/auth';
 import Images from '../../../Constraints/Images.js';
 import {useDispatch, useSelector} from 'react-redux';
 import database from '@react-native-firebase/database';
@@ -41,33 +42,13 @@ function Verify({navigation, props, route}) {
   }, []);
 
   const uploadUserToDataBase = results => {
-    let rootRef = database().ref();
-    const newReference = database().ref('/users').push();
-
-    rootRef
-      .child('users')
-      .once('value')
-      .then(snapshot => {
-        // if (snapshot.exists()) {
-        //   newReference
-        //     .set({
-        //       key: newReference.key,
-        //       userId: results.user._user.uid,
-        //       userPhone: results.user._user.phoneNumber,
-        //       Ratings: [0],
-        //     })
-        //     .then(() => {
-        //       dispatch(
-        //         addUserid(
-        //           results.user._user.uid,
-        //           results.user._user.phoneNumber,
-        //         ),
-        //       );
-        //       dispatch(addUserKey(newReference.key));
-        //     })
-        //     .catch(() => {});
-        //   navigation.replace('Home');
-        // } else {
+    const newReference = database().ref(`users/${code}`);
+    newReference.once('value').then(snapshot => {
+      if (snapshot.exists()) {
+        const user = snapshot.val();
+        navigation.replace('Home', {});
+        dispatch(addUserid(user?.userId, user?.userPhone));
+      } else {
         newReference
           .set({
             key: newReference.key,
@@ -90,9 +71,34 @@ function Verify({navigation, props, route}) {
           })
           .catch(error => {
             alert('Something went wrong' + error);
+            setLoader(false);
           });
-        // }
-      });
+      }
+    });
+    // newReference
+    //   .set({
+    //     key: newReference.key,
+    //     userId: results.user._user.uid,
+    //     userPhone: results.user._user.phoneNumber,
+    //     Ratings: [0],
+    //   })
+    //   .then(() => {
+    //     dispatch(
+    //       addUserid(results.user._user.uid, results.user._user.phoneNumber),
+    //     );
+    //   })
+    //   .then(() => {
+    //     setLoader(false);
+    //     navigation.replace('SignUpOtpp', {
+    //       results: results,
+    //       code: code,
+    //       userKey: newReference.key,
+    //     });
+    //   })
+    //   .catch(error => {
+    //     alert('Something went wrong' + error);
+    //     setLoader(false);
+    //   });
   };
 
   const verifyUser = async () => {

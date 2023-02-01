@@ -29,15 +29,15 @@ const Otp = ({navigation}) => {
     try {
       if (code !== '') {
         setLoader(true);
-        const confirmation = await auth().signInWithPhoneNumber(code);
+        const phoneNumTrim = code.substring(1);
+        const phoneNumAlter = '+92' + phoneNumTrim;
+        const confirmation = await auth().signInWithPhoneNumber(phoneNumAlter);
         // setConfirm(confirmation);
-
         setLoader(false);
-
         if (confirmation._auth._authResult) {
           navigation.replace('Verify', {
             confirmation: confirmation,
-            code: code,
+            code: phoneNumAlter,
           });
           setCode('');
         } else {
@@ -93,7 +93,7 @@ const Otp = ({navigation}) => {
               onFocus={() => {
                 setPhonePlace(true);
               }}
-              placeholder={phonePlace ? 'Enter your number' : '+92**********'}
+              placeholder={phonePlace ? 'Enter your number' : '03**********'}
               placeholderTextColor={phonePlace ? 'black' : 'grey'}
             />
           </View>

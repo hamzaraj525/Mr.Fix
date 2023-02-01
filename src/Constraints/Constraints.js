@@ -43,4 +43,6 @@ export default Constraints = {
   HOME_SERVICES: 'Home Services',
   PERSONAL_SERVICES: 'Personal Services',
   ADD_TO_CART: 'Add to Cart',
+  NO_NEW_MESSAGES: 'No new Messages',
+  CHAT: 'Chat',
 };
